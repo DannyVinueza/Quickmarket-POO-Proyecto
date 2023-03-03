@@ -74,7 +74,7 @@ public class Login extends JDialog{
                             usuarioTextField.setText("");
                             contraseñaPasswordField.setText("");
 
-                            //Administrador admin = new Administrador(null, index);
+                            Administrador admin = new Administrador(null, index);
                         }
                         else {
                             mensaje.setText("Usuario o Contraseña Inválidos");
