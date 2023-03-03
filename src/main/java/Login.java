@@ -32,10 +32,7 @@ public class Login extends JDialog{
     };
 
     public Login(JFrame login) {
-        //JFrame frame =new JFrame("Ventana Login");
         super(login);
-
-        //index=0;
 
         Image img = Toolkit.getDefaultToolkit().getImage(Login.class.getResource("Imagenes/LOGO.png"));
         setIconImage(img);
@@ -91,7 +88,7 @@ public class Login extends JDialog{
                             usuarioTextField.setText("");
                             contraseñaPasswordField.setText("");
 
-                            //Cajero cajero = new Cajero(null,index);
+                            Cajero cajero = new Cajero(null,index);
                         }
                         else {
                             mensaje.setText("Usuario o Contraseña Inválidos");
