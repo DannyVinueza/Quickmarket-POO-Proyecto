@@ -35,6 +35,7 @@ public class Login extends JDialog{
         super(login);
 
         Image img = Toolkit.getDefaultToolkit().getImage(Login.class.getResource("Imagenes/LOGO.png"));
+
         setIconImage(img);
         setContentPane(contentPane);
         setLocationByPlatform(true);
