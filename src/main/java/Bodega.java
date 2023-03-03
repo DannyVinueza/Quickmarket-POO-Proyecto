@@ -20,8 +20,10 @@ public class Bodega extends Login{
 
     public Bodega(JFrame bodeg, int ind){
         super(bodeg);
+
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
         setIconImage(img);
+
         setLocationRelativeTo(null);
         setContentPane(bodega_content);
         pack();
