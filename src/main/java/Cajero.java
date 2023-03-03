@@ -35,7 +35,7 @@ public class Cajero extends Login{
                 if (ind == 2) {
                     Login login = new Login(null);
                 } else if(ind == 1) {
-                    //Administrador administrador = new Administrador(null, ind);
+                    Administrador administrador = new Administrador(null, ind);
                 }
             }
         });
