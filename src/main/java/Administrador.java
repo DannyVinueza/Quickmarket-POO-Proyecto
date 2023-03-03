@@ -37,7 +37,7 @@ public class Administrador extends Login{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Bodega bodg = new Bodega(null, ind);
+                //Bodega bodg = new Bodega(null, ind);
             }
         });
     }
