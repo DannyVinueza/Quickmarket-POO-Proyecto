@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Bodega extends Login{
+public class Bodega extends Administrador{
     private JTextField ingresaElProductoTextField;
     private JTextField detallesTextField;
     private JTextField precioTextField;
@@ -18,7 +18,8 @@ public class Bodega extends Login{
     private JButton eliminar;
     private JPanel bodega_content;
 
-    public Bodega(int ind){
+    public Bodega(){
+        super(2);
 
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
         setIconImage(img);
@@ -33,7 +34,7 @@ public class Bodega extends Login{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Administrador login = new Administrador(ind);
+                Administrador login = new Administrador(2);
             }
         });
 
