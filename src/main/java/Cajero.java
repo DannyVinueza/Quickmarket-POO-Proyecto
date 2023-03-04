@@ -7,10 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Cajero extends Login{
@@ -124,6 +121,14 @@ public class Cajero extends Login{
                 Conexion conBD = new Conexion();
                 try{
                     con = conBD.conectar();
+                    int var = 0;
+                    //Actualizar el stock
+                    String acStock = "UPDATE productos SET stock = stock - " + ((int) cantidadSPN.getValue()) + " WHERE id_producto = (" +
+                            "SELECT subquery.id_producto FROM (SELECT id_producto FROM productos WHERE nombre = '" + idprodTXT.getText() + "') AS subquery)";
+
+                    PreparedStatement pstAc = con.prepareStatement(acStock);
+
+
                     String buscar = "SELECT * FROM productos WHERE nombre = '" + idprodTXT.getText() + "'";
                     Statement stBuscar = con.createStatement();
                     ResultSet reBuscar = stBuscar.executeQuery(buscar);
@@ -137,6 +142,8 @@ public class Cajero extends Login{
                                         reBuscar.getString(3),reBuscar.getDouble(4),
                                         cantidadaFinal
                                 );
+                                System.out.println("Estoy aqui");
+                                pstAc.executeUpdate();
                                 listaProductos.add(compraProductos);
 
                             }else{
