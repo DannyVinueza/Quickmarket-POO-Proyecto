@@ -35,7 +35,7 @@ public class Login extends JFrame{
         Image img = Toolkit.getDefaultToolkit().getImage(Login.class.getResource("Imagenes/LOGO.png"));
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Quick Market - Bienvenido");
+        setTitle("Quick Market - ¡Bienvenido!");
         setIconImage(img);
         setContentPane(contentPane);
         setLocationByPlatform(true);
