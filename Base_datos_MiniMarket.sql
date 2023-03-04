@@ -1,4 +1,4 @@
-CREATE DATABASE quickmarket;
+ CREATE DATABASE quickmarket;
 USE quickmarket;
 
   CREATE TABLE `quickmarket`.`roles` (
@@ -66,7 +66,7 @@ CREATE TABLE Detalle_Factura (
     id_factura INT(11) NOT NULL,
     id_producto INT(11) NOT NULL,
     cantidad INT(11) NOT NULL,
-    precio_unit DECIMAL(10,2) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     PRIMARY KEY (id_detalle),
     FOREIGN KEY (id_factura) REFERENCES Facturas(id_factura),
     FOREIGN KEY (id_producto) REFERENCES Productos(id_producto)
@@ -100,7 +100,7 @@ VALUES
     (5, '2022-03-04', 900.00);
 
 -- Insertar datos en tabla Detalle_Factura
-INSERT INTO Detalle_Factura (id_factura, id_producto, cantidad, precio_unit)
+INSERT INTO Detalle_Factura (id_factura, id_producto, cantidad, precio)
 VALUES
     (1, 1, 2, 1500.00),
     (1, 2, 1, 250.00),
