@@ -45,7 +45,7 @@ CREATE TABLE Productos (
     id_producto INT(11) NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL,
     descripcion TEXT,
-    precio_unit DECIMAL(10,2) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     cantidad_stock INT(11) NOT NULL,
     PRIMARY KEY (id_producto)
 );
@@ -82,7 +82,7 @@ VALUES
     ('José Hernández', 'Avenida del Bosque 135', '555-7890', 'josehernandez@email.com');
 
 -- Insertar datos en tabla Productos
-INSERT INTO Productos (nombre, descripcion, precio_unit, cantidad_stock)
+INSERT INTO Productos (nombre, descripcion, precio, cantidad_stock)
 VALUES
     ('Televisor', 'Pantalla plana de 55 pulgadas', 1500.00, 10),
     ('Reproductor de Blu-ray', 'Reproduce discos de alta definición', 250.00, 20),
@@ -100,7 +100,7 @@ VALUES
     (5, '2022-03-04', 900.00);
 
 -- Insertar datos en tabla Detalle_Factura
-INSERT INTO Detalle_Factura (id_factura, id_producto, cantidad, precio_unit)
+INSERT INTO Detalle_Factura (id_factura, id_producto, cantidad, precio)
 VALUES
     (1, 1, 2, 1500.00),
     (1, 2, 1, 250.00),
