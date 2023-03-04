@@ -41,7 +41,7 @@ public class Clientes extends Login {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Cajero cajero = new Cajero(null,ind);
+                //Cajero cajero = new Cajero(null,ind);
             }
         });
     }
