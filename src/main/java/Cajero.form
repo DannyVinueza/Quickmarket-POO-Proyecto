@@ -264,7 +264,7 @@
               <font name="Verdana" size="16"/>
             </properties>
           </component>
-          <component id="51bc9" class="javax.swing.JTable" binding="table1" default-binding="true">
+          <component id="51bc9" class="javax.swing.JTable" binding="productosCompra">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="12" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="50"/>

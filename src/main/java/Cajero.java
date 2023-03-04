@@ -4,12 +4,11 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class Cajero extends Login{
     public JPanel cajero_panel;
@@ -19,7 +18,7 @@ public class Cajero extends Login{
     private JSpinner cantidadSPN;
     private JButton agregar;
     private JButton eliminar;
-    private JTable table1;
+    private JTable productosCompra;
     private JTable table2;
     private JTextField idprodTXT;
     private JLabel mensajeTXT;
@@ -31,6 +30,8 @@ public class Cajero extends Login{
     private JButton limpiar;
 
     private Connection con;
+
+    private ArrayList<comprandoProductos> listaProductos = new ArrayList<>();;
 
     public Cajero(int ind){
 
@@ -103,6 +104,42 @@ public class Cajero extends Login{
 
             }
         });
+
+        //Llenar la tabla con los products que se agreguen
+        agregar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Conexion conBD = new Conexion();
+                try{
+                    con = conBD.conectar();
+                    String buscar = "SELECT * FROM productos WHERE nombre = '" + idprodTXT.getText() + "'";
+                    Statement stBuscar = con.createStatement();
+                    ResultSet reBuscar = stBuscar.executeQuery(buscar);
+
+                    if (reBuscar.next()){
+                        if(idprodTXT.getText().equals(reBuscar.getString(2))){
+                            if(comprobarStock() == true){
+                                int cantidadaFinal = (int) cantidadSPN.getValue();
+                                comprandoProductos compraProductos = new comprandoProductos(
+                                        reBuscar.getInt(1), reBuscar.getString(2),
+                                        reBuscar.getString(3),reBuscar.getDouble(4),
+                                        cantidadaFinal
+                                );
+                                listaProductos.add(compraProductos);
+
+                            }else{
+                                mensajeTXT.setText("Ingrese una cantidad menor a " + reBuscar.getInt(5));
+                            }
+                        }
+                    }else{
+                        mensajeTXT.setText("No se encuentra el producto!!!!");
+                    }
+                    con.close();
+                }catch (SQLException es){
+                    System.out.println("Se presento un error" + es.getMessage());
+                }
+            }
+        });
     }
 
     public void limpiar(){
@@ -113,5 +150,39 @@ public class Cajero extends Login{
         precioVenTXT.setText("");
         cantidadTF.setText("");
         cantidadSPN.setValue(ob);
+        mensajeTXT.setText("Ingresa los Datos!!!!");
     }
+
+    public boolean comprobarStock(){
+        Conexion conBD = new Conexion();
+        int cantidadaFinal = (int) cantidadSPN.getValue();
+        boolean ver = false;
+        try{
+            con = conBD.conectar();
+
+
+            String buscar = "SELECT * FROM productos WHERE nombre = '" + idprodTXT.getText() + "'";
+            Statement stBuscar = con.createStatement();
+            ResultSet reBuscar = stBuscar.executeQuery(buscar);
+
+
+            if (reBuscar.next()){
+                if(idprodTXT.getText().equals(reBuscar.getString(2))){
+
+                    if ((cantidadaFinal > 0) && (cantidadaFinal <= reBuscar.getInt(5))){
+                        ver = true;
+                    }else{
+                        ver = false;
+                    }
+                }
+            }else{
+                mensajeTXT.setText("No se encuentra el producto!!!!");
+            }
+            con.close();
+        }catch (SQLException es){
+            System.out.println("Se presento un error" + es.getMessage());
+        }
+        return ver;
+    }
+
 }
