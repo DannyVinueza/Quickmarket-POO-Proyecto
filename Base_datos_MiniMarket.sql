@@ -100,7 +100,7 @@ VALUES
     (5, '2022-03-04', 900.00);
 
 -- Insertar datos en tabla Detalle_Factura
-INSERT INTO Detalle_Factura (id_factura, id_producto, cantidad, precio)
+INSERT INTO Detalle_Factura (id_factura, id_producto, cantidad, precio_unit)
 VALUES
     (1, 1, 2, 1500.00),
     (1, 2, 1, 250.00),
