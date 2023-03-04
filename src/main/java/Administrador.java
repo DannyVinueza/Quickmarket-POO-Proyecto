@@ -8,6 +8,8 @@ public class Administrador extends Login{
     private JButton regresarL;
     private JButton cajeroButton;
     private JButton bodega_button;
+    private JButton ventasButton;
+    private JButton usuariosButton;
 
     public Administrador(int ind){
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
@@ -38,7 +40,7 @@ public class Administrador extends Login{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Bodega bodg = new Bodega(ind);
+                Bodega bodg = new Bodega();
             }
         });
     }
