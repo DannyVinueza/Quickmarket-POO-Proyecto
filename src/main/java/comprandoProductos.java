@@ -52,4 +52,10 @@ public class comprandoProductos {
     public void setCantidadP(int cantidadP) {
         this.cantidadP = cantidadP;
     }
+
+    @Override
+    public String toString(){
+        return "Id" + idProductos + " nombre " + nombreP + " descripcion " + descripcionP
+                + " precio " + precioP + " cantidad " + cantidadP;
+    }
 }

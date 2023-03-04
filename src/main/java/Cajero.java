@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,13 @@ public class Cajero extends Login{
     private ArrayList<comprandoProductos> listaProductos = new ArrayList<>();;
 
     public Cajero(int ind){
+        //JScrollPane scroll = new JScrollPane(productosCompra);
+        /*scrollTabla = new JScrollPane(productosCompra);
+        scrollTabla.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollTabla.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollTabla.setBounds(10, 10,35,100);
+        setBounds(0, 0,35,100);
+        getContentPane().add(scrollTabla);*/
 
         cantidadTF.setEnabled(false);
         cantidadSPN.addChangeListener(new ChangeListener() {
@@ -51,6 +59,7 @@ public class Cajero extends Login{
         setContentPane(cajero_panel);
         pack();
         setVisible(true);
+
         regresarL.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -135,6 +144,19 @@ public class Cajero extends Login{
                         mensajeTXT.setText("No se encuentra el producto!!!!");
                     }
                     con.close();
+                    System.out.println(listaProductos.toString());
+                    DefaultTableModel modTabla = new DefaultTableModel(new Object[]{"ID", "Nombre", "Descripción", "Precio", "Cantidad"}, 0);
+                    productosCompra.setModel(modTabla);
+                    for(comprandoProductos pr: listaProductos){
+                        Object[] fila = new Object[]{
+                                pr.getIdProductos(),
+                                pr.getNombreP(),
+                                pr.getDescripcionP(),
+                                pr.getPrecioP(),
+                                pr.getCantidadP()
+                        };
+                        modTabla.addRow(fila);
+                    }
                 }catch (SQLException es){
                     System.out.println("Se presento un error" + es.getMessage());
                 }
