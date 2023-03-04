@@ -7,7 +7,7 @@ public class Conexion {
     private String nombreBD = "quickmarket";
     private String url = "jdbc:mysql://localhost/" + nombreBD;
     private String usuario = "root";
-    private String contrasenia = "UGPCUGR2002";
+    private String contrasenia = "Danny.2002";
 
     public Connection conectar(){
         try{
