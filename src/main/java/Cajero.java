@@ -5,6 +5,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +33,8 @@ public class Cajero extends Login{
     private JButton limpiar;
 
     private Connection con;
+
+    private int filaSeleccionada;
 
     private ArrayList<comprandoProductos> listaProductos = new ArrayList<>();;
 
@@ -110,7 +114,6 @@ public class Cajero extends Login{
             @Override
             public void actionPerformed(ActionEvent e) {
                 limpiar();
-
             }
         });
 
@@ -147,6 +150,7 @@ public class Cajero extends Login{
                     System.out.println(listaProductos.toString());
                     DefaultTableModel modTabla = new DefaultTableModel(new Object[]{"ID", "Nombre", "Descripción", "Precio", "Cantidad"}, 0);
                     productosCompra.setModel(modTabla);
+                    modTabla.addRow(new Object[]{"ID", "Nombre", "Descripción", "Precio", "Cantidad"});
                     for(comprandoProductos pr: listaProductos){
                         Object[] fila = new Object[]{
                                 pr.getIdProductos(),
@@ -160,6 +164,31 @@ public class Cajero extends Login{
                 }catch (SQLException es){
                     System.out.println("Se presento un error" + es.getMessage());
                 }
+            }
+        });
+        eliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel modeloTabla = (DefaultTableModel) productosCompra.getModel();
+
+
+                if(filaSeleccionada == 0){
+
+                }else{
+                    modeloTabla.removeRow(filaSeleccionada);
+                    listaProductos.remove(filaSeleccionada-1);
+                }
+
+                System.out.println(listaProductos.toString());
+            }
+        });
+
+        productosCompra.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                filaSeleccionada = productosCompra.getSelectedRow();
+                System.out.println(filaSeleccionada);
             }
         });
     }
