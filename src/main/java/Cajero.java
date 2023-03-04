@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.HierarchyBoundsAdapter;
+import java.sql.Connection;
 
 public class Cajero extends Login{
     public JPanel cajero_panel;
@@ -20,6 +22,7 @@ public class Cajero extends Login{
     private JTextField NOMProdTXT;
     private JTextField precioVenTXT;
 
+    private Connection con;
     public Cajero(int ind){
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,6 +52,12 @@ public class Cajero extends Login{
             }
         });
 
-
+        buscar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Conexion conBD = new Conexion();
+                con = conBD.conectar();
+            }
+        });
     }
 }

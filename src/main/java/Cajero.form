@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="cajero_panel" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="4" y="5" width="908" height="416"/>
+      <xy x="4" y="5" width="1156" height="416"/>
     </constraints>
     <properties>
       <enabled value="false"/>
@@ -103,7 +103,7 @@
               <foreground color="-1315861"/>
               <opaque value="false"/>
               <requestFocusEnabled value="false"/>
-              <text value="Nombre del Producto:"/>
+              <text value="Descripcion:"/>
               <verifyInputWhenFocusTarget value="false"/>
             </properties>
           </component>
@@ -205,11 +205,18 @@
               <requestFocusEnabled value="false"/>
             </properties>
           </component>
-          <hspacer id="dec0a">
+          <component id="e0f65" class="javax.swing.JLabel">
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
-          </hspacer>
+            <properties>
+              <background color="-1"/>
+              <enabled value="true"/>
+              <font name="Verdana" size="16"/>
+              <foreground color="-1"/>
+              <text value="INGRESE EL NOMBRE DEL PRODUCTO:"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="fdd98" layout-manager="GridLayoutManager" row-count="5" column-count="13" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
