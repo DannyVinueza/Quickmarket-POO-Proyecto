@@ -142,7 +142,6 @@ public class Cajero extends Login{
                                         reBuscar.getString(3),reBuscar.getDouble(4),
                                         cantidadaFinal
                                 );
-                                System.out.println("Estoy aqui");
                                 pstAc.executeUpdate();
                                 listaProductos.add(compraProductos);
 
@@ -177,16 +176,28 @@ public class Cajero extends Login{
             @Override
             public void actionPerformed(ActionEvent e) {
                 DefaultTableModel modeloTabla = (DefaultTableModel) productosCompra.getModel();
-
+                Conexion conBaD = new Conexion();
+                con = conBaD.conectar();
 
                 if(filaSeleccionada == 0){
-
+                    System.out.println("No puede eliminar la cabecera");
                 }else{
                     modeloTabla.removeRow(filaSeleccionada);
+                    comprandoProductos prod = listaProductos.get(filaSeleccionada - 1);
+                    String stockMas = "UPDATE productos SET stock = stock + " + prod.getCantidadP() + " WHERE id_producto = (" +
+                            "SELECT subquery.id_producto FROM (SELECT id_producto FROM productos WHERE nombre = '" + prod.getNombreP() + "') AS subquery)";
+
+                    try{
+                        PreparedStatement masStock = con.prepareStatement(stockMas);
+                        masStock.executeUpdate();
+                    }catch (SQLException ex){
+                        System.out.println(ex);
+                    }
                     listaProductos.remove(filaSeleccionada-1);
                 }
 
                 System.out.println(listaProductos.toString());
+                conBaD.desconectar();
             }
         });
 
