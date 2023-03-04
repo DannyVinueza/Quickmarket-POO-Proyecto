@@ -11,6 +11,7 @@ public class Clientes extends Login {
     private JTextField textFieldCorreo_Cli;
     private JTextField textFieldTlf_Cli;
     private JTextField textFieldDirec_Cli;
+    private JTextField cedula;
     private JLabel Mensajelabel;
     private JPanel clientes2;
     private JButton buscar;

@@ -16,7 +16,7 @@ public class Login extends JDialog{
     private JComboBox rolComboBox;
     private JLabel mensaje;
     private JButton buttonOK;
-
+    private Connection con;
     public int index;
 
     String imgs[] = {
@@ -55,9 +55,9 @@ public class Login extends JDialog{
         ingresarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Connection con;
+                Conexion conBD = new Conexion();
                 try {
-                    con = getConection();
+                    con = conBD.conectar();
 
                     String id = String.valueOf(index);
                     String usuario = usuarioTextField.getText();
@@ -111,9 +111,9 @@ public class Login extends JDialog{
     public Usuario user;
     private Usuario getValidacion(String id, String usuario, String contra) {
         Usuario user = null;
-        Connection con;
+        Conexion coneBD = new Conexion();
         try{
-            con = getConection();
+            con = coneBD.conectar();
 
             ps = con.prepareStatement("SELECT * FROM USUARIOS where idroles =? and usuario =? and contrasenia = ?;");
             ps.setString(1, id);
@@ -140,19 +140,6 @@ public class Login extends JDialog{
         mensaje.setText(msj[index]);
     }
 
-    public static Connection getConection(){
-        Connection con = null;
-        String url = "jdbc:mysql://localhost/quickmarket",
-                user = "root",
-                password = "UGPCUGR2002";
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(url, user, password);
-        } catch (ClassNotFoundException | SQLException e) {
-            System.err.println(e);
-        }
-        return con;
-    }
     public static void main(String[] args) {
         Login login = new Login(null);
     }
