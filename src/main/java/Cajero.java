@@ -4,6 +4,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,6 +28,7 @@ public class Cajero extends Login{
     private JTextField NOMProdTXT;
     private JTextField precioVenTXT;
     private JTextField cantidadTF;
+    private JButton limpiar;
 
     private Connection con;
 
@@ -92,5 +95,23 @@ public class Cajero extends Login{
                 }
             }
         });
+
+        limpiar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                limpiar();
+
+            }
+        });
+    }
+
+    public void limpiar(){
+        Object ob = new Object();
+        ob = 0;
+        idprodTXT.setText("");
+        NOMProdTXT.setText("");
+        precioVenTXT.setText("");
+        cantidadTF.setText("");
+        cantidadSPN.setValue(ob);
     }
 }

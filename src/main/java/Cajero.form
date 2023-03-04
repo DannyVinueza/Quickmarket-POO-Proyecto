@@ -229,6 +229,14 @@
             </constraints>
             <properties/>
           </component>
+          <component id="17cd0" class="javax.swing.JButton" binding="limpiar">
+            <constraints>
+              <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="LIMPIAR"/>
+            </properties>
+          </component>
         </children>
       </grid>
       <grid id="fdd98" layout-manager="GridLayoutManager" row-count="5" column-count="13" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
