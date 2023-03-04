@@ -23,9 +23,10 @@ public class Clientes extends Login {
     private JButton modificar;
     private JButton aceptar;
 
-    public Clientes(JFrame client, int ind){
-        super(client);
+    public Clientes(int ind){
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Clientes");
         setIconImage(img);
         setLocationRelativeTo(null);
         setContentPane(clientes1);
@@ -36,7 +37,7 @@ public class Clientes extends Login {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Cajero cajero = new Cajero(null,ind);
+                Cajero cajero = new Cajero(ind);
             }
         });
 
@@ -44,7 +45,7 @@ public class Clientes extends Login {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Cajero cajero = new Cajero(null,ind);
+                Cajero cajero = new Cajero(ind);
             }
         });
     }

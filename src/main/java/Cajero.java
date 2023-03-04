@@ -20,9 +20,10 @@ public class Cajero extends Login{
     private JTextField NOMProdTXT;
     private JTextField precioVenTXT;
 
-    public Cajero(JFrame cajer, int ind){
-        super(cajer);
+    public Cajero(int ind){
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Cajero");
         setIconImage(img);
         setLocationRelativeTo(null);
         setContentPane(cajero_panel);
@@ -33,9 +34,9 @@ public class Cajero extends Login{
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 if (ind == 2) {
-                    Login login = new Login(null);
+                    Login login = new Login();
                 } else if(ind == 1) {
-                    Administrador administrador = new Administrador(null, ind);
+                    Administrador administrador = new Administrador (ind);
                 }
             }
         });
@@ -44,7 +45,7 @@ public class Cajero extends Login{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-               // Clientes cliente = new Clientes(null, ind);
+                Clientes cliente = new Clientes(ind);
             }
         });
 

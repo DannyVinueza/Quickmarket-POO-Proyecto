@@ -18,12 +18,12 @@ public class Bodega extends Login{
     private JButton eliminar;
     private JPanel bodega_content;
 
-    public Bodega(JFrame bodeg, int ind){
-        super(bodeg);
+    public Bodega(int ind){
 
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
         setIconImage(img);
-
+        setTitle("Bodega");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setContentPane(bodega_content);
         pack();
@@ -33,7 +33,7 @@ public class Bodega extends Login{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Administrador login = new Administrador(null, ind);
+                Administrador login = new Administrador(ind);
             }
         });
 

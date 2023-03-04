@@ -6,7 +6,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.*;
 
-public class Login extends JDialog{
+public class Login extends JFrame{
     PreparedStatement ps;
     private JPanel contentPane;
     private JButton ingresarButton;
@@ -31,11 +31,11 @@ public class Login extends JDialog{
             "Ingresando como Cajero"
     };
 
-    public Login(JFrame login) {
-        super(login);
-
+    public Login() {
         Image img = Toolkit.getDefaultToolkit().getImage(Login.class.getResource("Imagenes/LOGO.png"));
 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Quick Market - Bienvenido");
         setIconImage(img);
         setContentPane(contentPane);
         setLocationByPlatform(true);
@@ -74,7 +74,7 @@ public class Login extends JDialog{
                             usuarioTextField.setText("");
                             contraseñaPasswordField.setText("");
 
-                            Administrador admin = new Administrador(null, index);
+                            Administrador admin = new Administrador(index);
                         }
                         else {
                             mensaje.setText("Usuario o Contraseña Inválidos");
@@ -89,7 +89,7 @@ public class Login extends JDialog{
                             usuarioTextField.setText("");
                             contraseñaPasswordField.setText("");
 
-                            Cajero cajero = new Cajero(null,index);
+                            Cajero cajero = new Cajero(index);
                         }
                         else {
                             mensaje.setText("Usuario o Contraseña Inválidos");
@@ -141,6 +141,6 @@ public class Login extends JDialog{
     }
 
     public static void main(String[] args) {
-        Login login = new Login(null);
+        Login login = new Login();
     }
 }

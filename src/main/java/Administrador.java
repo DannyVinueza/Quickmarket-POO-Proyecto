@@ -9,10 +9,11 @@ public class Administrador extends Login{
     private JButton cajeroButton;
     private JButton bodega_button;
 
-    public Administrador(JFrame adm, int ind){
-        super(adm);
+    public Administrador(int ind){
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
         setIconImage(img);
+        setTitle("Administrador");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setContentPane(admin);
         pack();
@@ -21,7 +22,7 @@ public class Administrador extends Login{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Login login = new Login(null);
+                Login login = new Login();
             }
         });
 
@@ -29,7 +30,7 @@ public class Administrador extends Login{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Cajero cajero = new Cajero(null, ind);
+                Cajero cajero = new Cajero(ind);
             }
         });
 
@@ -37,7 +38,7 @@ public class Administrador extends Login{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                Bodega bodg = new Bodega(null, ind);
+                Bodega bodg = new Bodega(ind);
             }
         });
     }
