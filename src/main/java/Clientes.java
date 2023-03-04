@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 
 public class Clientes extends Login {
     private JPanel clientes1;
+    private JTextField textField1;
+
     private JTextField textCi_Cli;
     private JTextField textFieldNom_Cli;
     private JTextField textFieldApell_Cli;
@@ -42,7 +44,7 @@ public class Clientes extends Login {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                //Cajero cajero = new Cajero(null,ind);
+                Cajero cajero = new Cajero(null,ind);
             }
         });
     }
