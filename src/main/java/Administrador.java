@@ -43,6 +43,22 @@ public class Administrador extends Login{
                 Bodega bodg = new Bodega();
             }
         });
+
+        usuariosButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                Usuarios usuario = new Usuarios();
+            }
+        });
+
+        ventasButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                Ventas ventas = new Ventas();
+            }
+        });
     }
 
 }
