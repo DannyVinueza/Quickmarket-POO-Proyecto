@@ -71,3 +71,43 @@ CREATE TABLE Detalle_Factura (
     FOREIGN KEY (id_factura) REFERENCES Facturas(id_factura),
     FOREIGN KEY (id_producto) REFERENCES Productos(id_producto)
 );
+
+-- Insertar datos en tabla Clientes
+INSERT INTO Clientes (nombre, direccion, telefono, correo_elec)
+VALUES
+    ('Juan Perez', 'Calle Falsa 123', '555-1234', 'juanperez@email.com'),
+    ('María García', 'Avenida Real 456', '555-5678', 'mariagarcia@email.com'),
+    ('Pedro Martínez', 'Calle del Sol 789', '555-9012', 'pedromartinez@email.com'),
+    ('Ana López', 'Calle del Río 246', '555-3456', 'anlopez@email.com'),
+    ('José Hernández', 'Avenida del Bosque 135', '555-7890', 'josehernandez@email.com');
+
+-- Insertar datos en tabla Productos
+INSERT INTO Productos (nombre, descripcion, precio_unit, cantidad_stock)
+VALUES
+    ('Televisor', 'Pantalla plana de 55 pulgadas', 1500.00, 10),
+    ('Reproductor de Blu-ray', 'Reproduce discos de alta definición', 250.00, 20),
+    ('Equipo de sonido', 'Incluye dos altavoces y un amplificador', 800.00, 5),
+    ('Laptop', 'Procesador Intel Core i7, 16 GB de RAM, disco SSD de 512 GB', 2000.00, 7),
+    ('Tablet', 'Pantalla táctil de 10 pulgadas, 64 GB de almacenamiento', 500.00, 15);
+
+-- Insertar datos en tabla Facturas
+INSERT INTO Facturas (id_cliente, fecha_emision, total)
+VALUES
+    (1, '2022-02-28', 3500.00),
+    (2, '2022-03-01', 1200.00),
+    (3, '2022-03-02', 600.00),
+    (4, '2022-03-03', 1500.00),
+    (5, '2022-03-04', 900.00);
+
+-- Insertar datos en tabla Detalle_Factura
+INSERT INTO Detalle_Factura (id_factura, id_producto, cantidad, precio_unit)
+VALUES
+    (1, 1, 2, 1500.00),
+    (1, 2, 1, 250.00),
+    (2, 4, 1, 2000.00),
+    (2, 5, 2, 500.00),
+    (3, 2, 3, 250.00),
+    (4, 1, 1, 1500.00),
+    (4, 3, 1, 800.00),
+    (5, 5, 1, 500.00),
+    (5, 2, 2, 250.00);
