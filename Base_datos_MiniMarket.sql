@@ -1,113 +1,122 @@
- CREATE DATABASE quickmarket;
+CREATE DATABASE quickmarket;
 USE quickmarket;
 
-  CREATE TABLE `quickmarket`.`roles` (
+CREATE TABLE quickmarket (
+  id_tienda INT PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  direccion VARCHAR(100) NOT NULL,
+  telefono VARCHAR(20) NOT NULL
+);
+
+INSERT INTO quickmarket (id_tienda, nombre, direccion, telefono)
+VALUES
+(123, 'Quick Market', 'quick.market@example.com', '0995511259');
+
+CREATE TABLE `quickmarket`.`roles` (
   `idroles` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `nombres` VARCHAR(30) NOT NULL,
-  PRIMARY KEY (`idroles`));
+PRIMARY KEY (`idroles`));
+CREATE UNIQUE INDEX roles_pk ON roles (idroles);
 
-  
 INSERT INTO `quickmarket`.`roles` (`nombres`) VALUES ('Administrador');
 INSERT INTO `quickmarket`.`roles` (`nombres`) VALUES ('Cajero');
 
-CREATE UNIQUE INDEX roles_pk ON `roles` (`idroles`);
 
-CREATE TABLE `quickmarket`.`usuarios`(
-  `idusuario` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `idroles` INT UNSIGNED NOT NULL,
+CREATE TABLE usuarios (
+  idusuario INT AUTO_INCREMENT PRIMARY KEY,
+  idroles INT UNSIGNED NOT NULL,
+  nombre_completo VARCHAR(50) NOT NULL,
   `usuario` VARCHAR(25) NOT NULL,
   `contrasenia` VARCHAR(25) NOT NULL,
-  PRIMARY KEY (`idusuario`),
-  CONSTRAINT FK_USUARIOS_TIENE_ROLES FOREIGN KEY (`idroles`) REFERENCES `roles` (`idroles`)
+  CONSTRAINT FK_USUARIOS_TIENE_ROLES FOREIGN KEY (idroles) REFERENCES roles (idroles)
 );
 
 CREATE UNIQUE INDEX USUARIOS_PK ON USUARIOS (`idusuario`);
-
 CREATE INDEX TIENE_FK ON USUARIOS (`idroles`);
 
-INSERT INTO `quickmarket`.`usuarios` (`idroles`, `usuario`, `contrasenia`) VALUES ('1', 'dannyV', '1234');
-INSERT INTO `quickmarket`.`usuarios` (`idroles`, `usuario`, `contrasenia`) VALUES ('2', 'danielQ', '1111');
-INSERT INTO `quickmarket`.`usuarios` (`idroles`, `usuario`, `contrasenia`) VALUES ('1', 'nestorC', '1211');
-INSERT INTO `quickmarket`.`usuarios` (`idroles`, `usuario`, `contrasenia`) VALUES ('2', 'joseP', '1122');
-
--- Crear tabla de clientes
 CREATE TABLE Clientes (
-    id_cliente INT(11) NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(50) NOT NULL,
-    direccion VARCHAR(100) NOT NULL,
-    telefono VARCHAR(15),
-    correo_elec VARCHAR(100),
-    PRIMARY KEY (id_cliente)
+  id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  direccion VARCHAR(100) NOT NULL,
+  correo VARCHAR(100) NOT NULL,
+  telefono VARCHAR(20) NOT NULL,
+  cedula VARCHAR(20) NOT NULL
 );
 
--- Crear tabla de productos
 CREATE TABLE Productos (
-    id_producto INT(11) NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(50) NOT NULL,
-    descripcion TEXT,
-    precio DECIMAL(10,2) NOT NULL,
-    cantidad_stock INT(11) NOT NULL,
-    PRIMARY KEY (id_producto)
+  id_producto INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  descripcion VARCHAR(100),
+  precio DECIMAL(10,2) NOT NULL,
+  stock INT NOT NULL
 );
 
--- Crear tabla de facturas
-CREATE TABLE Facturas (
-    id_factura INT(11) NOT NULL AUTO_INCREMENT,
-    id_cliente INT(11) NOT NULL,
-    fecha_emision DATE NOT NULL,
-    total DECIMAL(10,2) NOT NULL,
-    PRIMARY KEY (id_factura),
-    FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente)
+CREATE TABLE FACTURAS (
+  id_venta INT AUTO_INCREMENT PRIMARY KEY,
+  idusuario INT NOT NULL,
+  id_tienda INT NOT NULL,
+  id_cliente INT NOT NULL,
+  id_producto INT NOT NULL,
+  fecha_venta DATE NOT NULL,
+  forma_pago VARCHAR(50) NOT NULL,
+  importe_total DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (id_tienda) REFERENCES quickmarket(id_tienda),
+  FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+  FOREIGN KEY (id_producto) REFERENCES Productos(id_producto),
+  FOREIGN KEY (idusuario) REFERENCES usuarios(idusuario)
 );
 
--- Crear tabla de detalle de facturas
-CREATE TABLE Detalle_Factura (
-    id_detalle INT(11) NOT NULL AUTO_INCREMENT,
-    id_factura INT(11) NOT NULL,
-    id_producto INT(11) NOT NULL,
-    cantidad INT(11) NOT NULL,
-    precio DECIMAL(10,2) NOT NULL,
-    PRIMARY KEY (id_detalle),
-    FOREIGN KEY (id_factura) REFERENCES Facturas(id_factura),
-    FOREIGN KEY (id_producto) REFERENCES Productos(id_producto)
+CREATE TABLE DetalleFacturas (
+  id_detalle INT PRIMARY KEY AUTO_INCREMENT,
+  id_venta INT NOT NULL,
+  id_producto INT NOT NULL,
+  cantidad INT NOT NULL,
+  precio DECIMAL(10,2) NOT NULL,
+  subtotal DECIMAL(10,2) NOT NULL,
+  FOREIGN KEY (id_venta) REFERENCES FACTURAS(id_venta),
+  FOREIGN KEY (id_producto) REFERENCES Productos(id_producto)
 );
 
--- Insertar datos en tabla Clientes
-INSERT INTO Clientes (nombre, direccion, telefono, correo_elec)
+-- Insertar datos en la tabla Usuarios
+INSERT INTO usuarios (idroles, nombre_completo, usuario, contrasenia)
 VALUES
-    ('Juan Perez', 'Calle Falsa 123', '555-1234', 'juanperez@email.com'),
-    ('María García', 'Avenida Real 456', '555-5678', 'mariagarcia@email.com'),
-    ('Pedro Martínez', 'Calle del Sol 789', '555-9012', 'pedromartinez@email.com'),
-    ('Ana López', 'Calle del Río 246', '555-3456', 'anlopez@email.com'),
-    ('José Hernández', 'Avenida del Bosque 135', '555-7890', 'josehernandez@email.com');
+('1', 'Danny Vinueza', 'dannyV', '1234'),
+('2', 'Daniel Quishpe', 'danielQ', '1111'),
+('1', 'Néstor Chumania', 'nestorC', '1211'),
+('2', 'José Panchi', 'joseP', '1122');
 
--- Insertar datos en tabla Productos
-INSERT INTO Productos (nombre, descripcion, precio, cantidad_stock)
+-- Insertar datos en la tabla Clientes
+INSERT INTO Clientes (nombre, direccion, correo, telefono, cedula)
 VALUES
-    ('Televisor', 'Pantalla plana de 55 pulgadas', 1500.00, 10),
-    ('Reproductor de Blu-ray', 'Reproduce discos de alta definición', 250.00, 20),
-    ('Equipo de sonido', 'Incluye dos altavoces y un amplificador', 800.00, 5),
-    ('Laptop', 'Procesador Intel Core i7, 16 GB de RAM, disco SSD de 512 GB', 2000.00, 7),
-    ('Tablet', 'Pantalla táctil de 10 pulgadas, 64 GB de almacenamiento', 500.00, 15);
+('María López', 'Calle Falsa 123', 'maria.lopez@example.com', '0995511259', '1751358422'),
+('Luis González', 'Avenida Real 456', 'luis.gonzalez@example.com','0998511559', '1752354522'),
+('Ana Sánchez', 'Calle del Sol 789', 'ana.sanchez@example.com', '0995211459','1751454622'),
+('Juan Martínez', 'Calle del Río 246', 'juan.martinez@example.com', '0995113259','1755355422'),
+('Miguel Pérez', 'Avenida del Bosque 135', 'miguel.perez@example.com', '0945153659','1755354622');
 
--- Insertar datos en tabla Facturas
-INSERT INTO Facturas (id_cliente, fecha_emision, total)
+-- Insertar datos en la tabla Productos
+INSERT INTO Productos (nombre, descripcion, precio, stock)
 VALUES
-    (1, '2022-02-28', 3500.00),
-    (2, '2022-03-01', 1200.00),
-    (3, '2022-03-02', 600.00),
-    (4, '2022-03-03', 1500.00),
-    (5, '2022-03-04', 900.00);
+('Leche', 'Leche descremada de 1 litro', 1.99, 100),
+('Queso', 'Queso fresco de vaca', 2.99, 50),
+('Pan', 'Pan de molde integral', 0.99, 200),
+('Café', 'Café molido de tueste medio', 3.49, 75),
+('Galletas', 'Galletas de avena con pasas', 1.49, 150);
 
--- Insertar datos en tabla Detalle_Factura
-INSERT INTO Detalle_Factura (id_factura, id_producto, cantidad, precio)
+-- Insertar datos en la tabla Facturas
+INSERT INTO Facturas( idusuario, id_tienda, id_cliente, id_producto, fecha_venta, forma_pago, importe_total)
 VALUES
-    (1, 1, 2, 1500.00),
-    (1, 2, 1, 250.00),
-    (2, 4, 1, 2000.00),
-    (2, 5, 2, 500.00),
-    (3, 2, 3, 250.00),
-    (4, 1, 1, 1500.00),
-    (4, 3, 1, 800.00),
-    (5, 5, 1, 500.00),
-    (5, 2, 2, 250.00);
+(1, '123', 2,'1', '2023-03-02 10:30:00','Efectivo', 52.50),
+(2,'123', 4,'2', '2023-03-03 11:15:00','Cheque', 51.97),
+(1,'123', 2, '2','2023-03-03 12:30:00','Transferencia', 21.97),
+(2,'123', 3,'4', '2023-03-03 14:45:00','Tarjeta de Crédito', 35.48),
+(1,'123', 1,'5', '2023-03-04 09:00:00','Tarjeta de Débito', 12.47);
+
+-- Insertar datos en la tabla DetalleFacturas
+INSERT INTO DetalleFacturas (id_venta, id_producto, cantidad, precio, subtotal)
+VALUES
+(1, 1, 2, 1.99, 3.98),
+(1, 2, 1, 2.99, 2.99),
+(2, 3, 3, 0.99, 2.97),
+(2, 4, 2, 3.49, 6.98),
+(3, 5, 1, 1.49, 1.49);
