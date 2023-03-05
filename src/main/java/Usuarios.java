@@ -105,33 +105,34 @@ public class Usuarios extends Administrador {
                 }
             }
         });
-/*
+
         modificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                buscar_prducto();
+                buscar_usuario();
                 Conexion conBD = new Conexion();
 
                 try {
                     con = conBD.conectar();
-                    ps = con.prepareStatement("UPDATE productos SET nombre=?, descripcion=?, precio=?, stock=? Where nombre = ?");
+                    ps = con.prepareStatement("UPDATE usuarios SET idroles=?, nombre_completo=?, usuario=?, contrasenia=? Where usuario = ?");
 
-                    ps.setString(1, productoTXT.getText());
-                    ps.setString(2, descripcionTXT.getText());
-                    ps.setString(3, precioTXT.getText());
-                    ps.setString(4, Integer.toString(cantidad_stock));
-                    ps.setString(5, productoTXT.getText());
+                    ps.setString(1, String.valueOf(rolComboBox.getSelectedIndex()));
+                    ps.setString(2, nombreTXT.getText());
+                    ps.setString(3, userTXT.getText());
+                    ps.setString(4, contraTXT.getText());
+                    ps.setString(5, userTXT.getText());
+
 
                     System.out.println(ps);
 
                     int res = ps.executeUpdate();
 
                     if (res > 0) {
-                        mensaje.setText("¡Producto modificado con éxito!");
+                        mensajeJ.setText("¡Usuario modificado con éxito!");
                         llenartabla();
 
                     } else {
-                        JOptionPane.showMessageDialog(null, "Error al Modificar Producto, ingrese un Nombre Válido");
+                        mensajeJ.setText("Error al Modificar Usuario, ingrese un nickname");
                     }
 
                     limpiar();
@@ -146,33 +147,31 @@ public class Usuarios extends Administrador {
         eliminar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                buscar_prducto();
+                buscar_usuario();
                 Conexion conBD = new Conexion();
-
 
                 try {
                     con = conBD.conectar();
-                    ps = con.prepareStatement("DELETE FROM Productos  Where nombre = ?;");
+                    ps = con.prepareStatement("DELETE FROM usuarios Where usuario = ?;");
 
-                    ps.setString(1, productoTXT.getText());
+                    ps.setString(1, userTXT.getText());
 
                     int res = ps.executeUpdate();
 
                     if (res > 0) {
-                        mensaje.setText("¡Producto Eliminado con éxito!");
+                        mensajeJ.setText("¡Usuario Eliminado con éxito!");
+                        llenartabla();
                     } else {
-                        JOptionPane.showMessageDialog(null, "Error al Eliminar Producto, ingrese un nombre válido");
+                        mensajeJ.setText("Error al Eliminar Usuario, ingrese un nickname válido");
                     }
-
                     limpiar();
-                    llenartabla();
                     con.close();
 
                 } catch (HeadlessException | SQLException f) {
                     System.err.println(f);
                 }
             }
-        });*/
+        });
     }
     private void limpiar() {
         rolComboBox.setSelectedIndex(0);
@@ -187,7 +186,7 @@ public class Usuarios extends Administrador {
         tableUsuarios.setModel(modelo);
     }
 
-    private void buscar_prducto(){
+    private void buscar_usuario(){
         Conexion conBD = new Conexion();
 
         try{

@@ -144,7 +144,7 @@ public class Bodega extends Administrador{
                         llenartabla();
 
                     } else {
-                        JOptionPane.showMessageDialog(null, "Error al Modificar Producto, ingrese un Nombre Válido");
+                        mensaje.setText("Error al Modificar Producto, ingrese un Nombre Válido");
                     }
 
                     limpiar();
@@ -179,12 +179,13 @@ public class Bodega extends Administrador{
 
                     if (res > 0) {
                         mensaje.setText("¡Producto Eliminado con éxito!");
+                        llenartabla();
+
                     } else {
-                        JOptionPane.showMessageDialog(null, "Error al Eliminar Producto, ingrese un nombre válido");
+                        mensaje.setText("Error al Eliminar Producto, ingrese un nombre válido");
                     }
 
                     limpiar();
-                    llenartabla();
                     con.close();
 
                 } catch (HeadlessException | SQLException f) {
