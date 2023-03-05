@@ -20,7 +20,6 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Font.FontFamily;
 
 public class Cajero extends Login{
     public JPanel cajero_panel;
@@ -31,7 +30,7 @@ public class Cajero extends Login{
     private JButton agregar;
     private JButton eliminar;
     private JTable productosCompra;
-    private JTable table2;
+    private JTable tableClientes;
     private JTextField idprodTXT;
     private JLabel mensajeTXT;
     private JButton clienteButton;
@@ -48,6 +47,11 @@ public class Cajero extends Login{
     private String cajeroVen;
 
     public static DecimalFormat dc = new DecimalFormat("##.00");
+    private Label cedula;
+    private Label textFieldNom_Cli;
+    private Label textFieldDirec_Cli;
+    private Label textFieldTlf_Cli;
+    private Label textFieldCorreo_Cli;
 
     public Cajero(int ind){
         //JScrollPane scroll = new JScrollPane(productosCompra);
@@ -462,5 +466,18 @@ public class Cajero extends Login{
         }
         return ver;
     }
+    public JTable getTablaClientes() {
 
+
+        // Crear el modelo de la tabla de clientes
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Cédula");
+        model.addColumn("Nombre");
+        model.addColumn("Dirección");
+        model.addColumn("Teléfono");
+        model.addColumn("Correo");
+        tableClientes.setModel(model);
+        // Devolver la tabla de clientes
+        return tableClientes;
+    }
 }
