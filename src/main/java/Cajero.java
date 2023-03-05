@@ -247,28 +247,14 @@ public class Cajero extends Login{
 
                 try{
                     con = conCli.conectar();
-                    String cliente = "SELECT * FROM clientes WHERE cedula = '" + 1755355422 + "'";
-                    String empresaDatos = "SELECT * FROM quickmarket";
-
-                    PdfWriter.getInstance(document, new FileOutputStream("factura.pdf"));
-                    document.open();
-
-                    // Añadir título
-                    Font titleFont = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD);
-                    Paragraph title = new Paragraph("Factura N° " + (int) (Math.random() * 9999) + 1000, titleFont);
-                    title.setAlignment(Element.ALIGN_CENTER);
-                    document.add(title);
-
-                    // Añadir datos del cliente
-                    Font subtitleFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
-                    Paragraph subtitle = new Paragraph("Datos del cliente", subtitleFont);
-                    document.add(subtitle);
-
                     String nombreCliente = "";
                     String direccionCliente = "";
                     String correo = "";
                     String telefono = "";
+                    String cliente = "SELECT * FROM clientes WHERE cedula = '" + 1755355422 + "'";
+                    String empresaDatos = "SELECT * FROM quickmarket";
 
+                    //Ejecucion para la consulta de los datos del cliente
                     Statement stmt;
                     ResultSet rs;
                     try {
@@ -284,12 +270,30 @@ public class Cajero extends Login{
                     }catch (SQLException ess){
                         System.out.println(ess);
                     }
+                    String nombreFactura = "factura-" + nombreCliente + ".pdf";
 
+                    PdfWriter.getInstance(document, new FileOutputStream(nombreFactura));
+                    document.open();
+
+                    // Añadir título
+                    Font titleFont = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD);
+                    Paragraph title = new Paragraph("Factura N° " + (int) (Math.random() * 9999) + 1000, titleFont);
+                    title.setAlignment(Element.ALIGN_CENTER);
+                    document.add(title);
+
+                    // Añadir datos del cliente
+                    Font subtitleFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
+                    Paragraph subtitle = new Paragraph("Datos del cliente", subtitleFont);
+                    document.add(subtitle);
+
+                    //Parrafo para el cliente
                     Paragraph nombre = new Paragraph("Nombre: " + nombreCliente);
                     Paragraph direccion = new Paragraph("Dirección: " + direccionCliente);
                     Paragraph ciudad = new Paragraph("Correo: " + correo);
                     Paragraph pais = new Paragraph("Telefono: " + telefono);
                     Paragraph vacio = new Paragraph("       ");//Insertar un salto de linea en el pdf
+
+                    //Añadimos al pdf
                     document.add(nombre);
                     document.add(direccion);
                     document.add(ciudad);
@@ -401,6 +405,8 @@ public class Cajero extends Login{
                     document.close();
                     //documentoPdf.close();
                     System.out.println("La factura se ha generado correctamente");
+
+                    //Vaciar pantalla
                     limpiar();
                     listaProductos.clear();
                     DefaultTableModel model = (DefaultTableModel) productosCompra.getModel();
