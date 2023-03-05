@@ -141,6 +141,7 @@ public class Bodega extends Administrador{
 
                     if (res > 0) {
                         mensaje.setText("¡Producto modificado con éxito!");
+                        llenartabla();
 
                     } else {
                         JOptionPane.showMessageDialog(null, "Error al Modificar Producto, ingrese un Nombre Válido");
@@ -164,8 +165,15 @@ public class Bodega extends Administrador{
 
                 try {
                     con = conBD.conectar();
-                    ps = con.prepareStatement("DELETE FROM Productos  Where id_producto = (Select id_producto From Productos where nombre=?)");
+                    ps = con.prepareStatement(/*"DELETE FROM DetalleFacturas where id_venta in(Select id_venta FROM Facturas where id_producto = (Select id_producto From Productos where nombre = ?));" +
+                            "DELETE FROM Facturas where id_producto = (Select id_producto From Productos where nombre = ?);" +
+                            "DELETE FROM DetalleFacturas where id_producto = (Select id_producto From Productos where nombre = ?);" +*/
+                            "DELETE FROM Productos  Where nombre = ?;");
+
                     ps.setString(1, productoTXT.getText());
+                   /* ps.setString(2, productoTXT.getText());
+                    ps.setString(3, productoTXT.getText());
+                    ps.setString(4, productoTXT.getText());*/
 
                     int res = ps.executeUpdate();
 
@@ -176,6 +184,7 @@ public class Bodega extends Administrador{
                     }
 
                     limpiar();
+                    llenartabla();
                     con.close();
 
                 } catch (HeadlessException | SQLException f) {
@@ -221,7 +230,7 @@ public class Bodega extends Administrador{
 
     private DefaultTableModel mostrarProductos()
     {
-        String []  nombresColumnas = {"Id Producto","Nombre","Descripcón","Precio","Stock"};
+        String [] nombresColumnas = {"Id Producto","Nombre","Descripcón","Precio","Stock"};
         String [] registros = new String[5];
 
         DefaultTableModel modelo = new DefaultTableModel(null,nombresColumnas);
