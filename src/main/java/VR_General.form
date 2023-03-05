@@ -64,7 +64,7 @@
         <children>
           <component id="794cd" class="javax.swing.JTable" binding="vrgTable">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="5" vsize-policy="6" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+              <grid row="1" column="0" row-span="1" col-span="5" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="800" height="-1"/>
               </grid>
             </constraints>
