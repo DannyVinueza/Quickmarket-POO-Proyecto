@@ -3,15 +3,17 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import javax.swing.table.DefaultTableModel;
+
 
 public class Clientes extends Login {
     PreparedStatement ps;
     private JPanel clientes1;
-    private JTextField textFieldNom_Cli;
-    private JTextField textFieldCorreo_Cli;
-    private JTextField textFieldTlf_Cli;
-    private JTextField textFieldDirec_Cli;
-    private JTextField cedula;
+    public JTextField textFieldNom_Cli;
+    public JTextField textFieldCorreo_Cli;
+    public JTextField textFieldTlf_Cli;
+    public JTextField textFieldDirec_Cli;
+    public JTextField cedula;
     private JLabel Mensajelabel;
     private JPanel clientes2;
     private JButton buscar;
@@ -148,10 +150,26 @@ public class Clientes extends Login {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
+                // Obtener los datos de los JTextField
+                String cedulaCliente = cedula.getText();
+                String nombreCliente = textFieldNom_Cli.getText();
+                String direccionCliente = textFieldDirec_Cli.getText();
+                String telefonoCliente = textFieldTlf_Cli.getText();
+                String correoCliente = textFieldCorreo_Cli.getText();
+
+                // Agregar los datos a la tabla de clientes en la clase Cajero
                 Cajero cajero = new Cajero(ind);
+                JTable tablaClientes = cajero.getTablaClientes();
+                DefaultTableModel model = (DefaultTableModel) tablaClientes.getModel();
+                Object[] rowData = {cedulaCliente, nombreCliente, direccionCliente, telefonoCliente, correoCliente};
+                model.addRow(rowData);
+
 
             }
         });
+
+
+
 
     }
 

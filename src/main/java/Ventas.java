@@ -43,5 +43,6 @@ public class Ventas extends Administrador{
                 VR_Usuario usuario = new VR_Usuario();
             }
         });
+
     }
 }

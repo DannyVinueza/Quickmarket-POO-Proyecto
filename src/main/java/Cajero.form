@@ -265,14 +265,16 @@
               <grid row="3" column="35" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
-          <component id="dde8c" class="javax.swing.JTable" binding="table2" default-binding="true">
+          <component id="dde8c" class="javax.swing.JTable" binding="tableClientes">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="35" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="50"/>
               </grid>
             </constraints>
             <properties>
-              <font name="Verdana" size="16"/>
+              <font name="Verdana" size="10"/>
+              <rowHeight value="30"/>
+              <rowMargin value="5"/>
             </properties>
           </component>
           <component id="51bc9" class="javax.swing.JTable" binding="productosCompra">
@@ -283,6 +285,8 @@
             </constraints>
             <properties>
               <font name="Verdana" size="16"/>
+              <rowHeight value="30"/>
+              <rowMargin value="5"/>
               <showHorizontalLines value="true"/>
               <showVerticalLines value="true"/>
               <updateSelectionOnSort value="true"/>
