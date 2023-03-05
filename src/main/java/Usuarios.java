@@ -32,6 +32,9 @@ public class Usuarios extends Administrador {
         pack();
         setVisible(true);
 
+        limpiar();
+        llenartabla();
+
         regresarL.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,19 +49,24 @@ public class Usuarios extends Administrador {
 
                 try{
                     con = conBD.conectar();
-                    String buscar = "SELECT * FROM productos WHERE nombre = '" + productoTXT.getText() + "'";
+                    String buscar = "SELECT * FROM usuarios WHERE usuario = '" + userTXT.getText() + "'";
                     Statement stBuscar = con.createStatement();
                     ResultSet reBuscar = stBuscar.executeQuery(buscar);
                     if (reBuscar.next()){
-                        if(productoTXT.getText().equals(reBuscar.getString(2))){
-                            descripcionTXT.setText(reBuscar.getString(3));
-                            precioTXT.setText(reBuscar.getString(4));
-                            stockSpn.setValue(reBuscar.getInt(5));
+                        if(userTXT.getText().equals(reBuscar.getString(4))){
+                            if(reBuscar.getString(2).equals("1")){
+                                rolComboBox.setSelectedIndex(1);
+                            } else {
+                                rolComboBox.setSelectedIndex(2);
+                            }
+                            nombreTXT.setText(reBuscar.getString(3));
+                            userTXT.setText(reBuscar.getString(4));
+                            contraTXT.setText(reBuscar.getString(5));
                         }
 
-                        mensaje.setText("¡Producto Encontrado!");
+                        mensajeJ.setText("¡Usuario Encontrado!");
                     }else{
-                        mensaje.setText("¡No existe éste Producto!");
+                        mensajeJ.setText("¡No existe éste Usuario!");
                     }
                     con.close();
                 }catch (SQLException es){
@@ -66,7 +74,7 @@ public class Usuarios extends Administrador {
                 }
             }
         });
-
+/*
         agregar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -144,15 +152,9 @@ public class Usuarios extends Administrador {
 
                 try {
                     con = conBD.conectar();
-                    ps = con.prepareStatement(/*"DELETE FROM DetalleFacturas where id_venta in(Select id_venta FROM Facturas where id_producto = (Select id_producto From Productos where nombre = ?));" +
-                            "DELETE FROM Facturas where id_producto = (Select id_producto From Productos where nombre = ?);" +
-                            "DELETE FROM DetalleFacturas where id_producto = (Select id_producto From Productos where nombre = ?);" +*/
-                            "DELETE FROM Productos  Where nombre = ?;");
+                    ps = con.prepareStatement("DELETE FROM Productos  Where nombre = ?;");
 
                     ps.setString(1, productoTXT.getText());
-                   /* ps.setString(2, productoTXT.getText());
-                    ps.setString(3, productoTXT.getText());
-                    ps.setString(4, productoTXT.getText());*/
 
                     int res = ps.executeUpdate();
 
@@ -170,7 +172,7 @@ public class Usuarios extends Administrador {
                     System.err.println(f);
                 }
             }
-        });
+        });*/
     }
     private void limpiar() {
         rolComboBox.setSelectedIndex(0);
