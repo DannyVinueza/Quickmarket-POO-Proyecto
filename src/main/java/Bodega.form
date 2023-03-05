@@ -234,6 +234,8 @@
           <autoCreateRowSorter value="true"/>
           <font name="Verdana" size="11"/>
           <foreground color="-16777216"/>
+          <rowHeight value="40"/>
+          <rowMargin value="10"/>
         </properties>
       </component>
       <component id="ee3af" class="javax.swing.JButton" binding="modificar">

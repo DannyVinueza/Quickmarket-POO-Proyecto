@@ -273,6 +273,8 @@
             </constraints>
             <properties>
               <font name="Verdana" size="10"/>
+              <rowHeight value="30"/>
+              <rowMargin value="5"/>
             </properties>
           </component>
           <component id="51bc9" class="javax.swing.JTable" binding="productosCompra">
@@ -283,6 +285,8 @@
             </constraints>
             <properties>
               <font name="Verdana" size="16"/>
+              <rowHeight value="30"/>
+              <rowMargin value="5"/>
               <showHorizontalLines value="true"/>
               <showVerticalLines value="true"/>
               <updateSelectionOnSort value="true"/>

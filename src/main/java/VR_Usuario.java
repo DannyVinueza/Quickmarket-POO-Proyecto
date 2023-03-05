@@ -45,10 +45,11 @@ public class VR_Usuario extends Ventas{
         String [] registros = new String[5];
 
         DefaultTableModel modelo = new DefaultTableModel(null,nombresColumnas);
-        String sql = "SELECT v.id_venta, c.nombre, e.nombre_completo, v.fecha_venta, v.importe_total\n" +
+        String sql = "SELECT v.id_venta AS venta_id, c.nombre AS cliente, e.nombre_completo AS empleado, v.fecha_venta, v.importe_total\n" +
                 "FROM Facturas v\n" +
                 "JOIN Clientes c ON v.id_cliente = c.id_cliente\n" +
                 "JOIN usuarios e ON v.idusuario = e.idusuario\n" +
+                "where e.usuario = 'danielQ'\n" +
                 "ORDER BY v.fecha_venta DESC;";
         Conexion conBD = new Conexion();
 

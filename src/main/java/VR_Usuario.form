@@ -73,10 +73,13 @@
               <component id="e6544" class="javax.swing.JTable" binding="vruTable">
                 <constraints>
                   <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="50"/>
+                    <preferred-size width="800" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <rowHeight value="40"/>
+                  <rowMargin value="10"/>
+                </properties>
               </component>
               <component id="b9a73" class="javax.swing.JLabel">
                 <constraints>

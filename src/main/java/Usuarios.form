@@ -28,6 +28,8 @@
             </constraints>
             <properties>
               <font name="Verdana" size="16"/>
+              <rowHeight value="40"/>
+              <rowMargin value="10"/>
             </properties>
           </component>
           <component id="b4f16" class="javax.swing.JButton" binding="eliminar">
