@@ -78,30 +78,34 @@ public class Usuarios extends Administrador {
         agregar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Conexion conBD = new Conexion();
+                if (rolComboBox.getSelectedIndex() == 0) {
+                    mensajeJ.setText("No haz elegido un rol");
+                } else {
+                    Conexion conBD = new Conexion();
 
-                try {
-                    con = conBD.conectar();
-                    ps = con.prepareStatement("INSERT INTO usuarios (idroles, nombre_completo, usuario, contrasenia) VALUES (?, ?, ?, ?)");
-                    ps.setString(1, String.valueOf(rolComboBox.getSelectedIndex()));
-                    ps.setString(2, nombreTXT.getText());
-                    ps.setString(3, userTXT.getText());
-                    ps.setString(4, contraTXT.getText());
-                    System.out.println(ps);
-                    int res = ps.executeUpdate();
+                    try {
+                        con = conBD.conectar();
+                        ps = con.prepareStatement("INSERT INTO usuarios (idroles, nombre_completo, usuario, contrasenia) VALUES (?, ?, ?, ?)");
+                        ps.setString(1, String.valueOf(rolComboBox.getSelectedIndex()));
+                        ps.setString(2, nombreTXT.getText());
+                        ps.setString(3, userTXT.getText());
+                        ps.setString(4, contraTXT.getText());
+                        System.out.println(ps);
+                        int res = ps.executeUpdate();
 
-                    if (res > 0) {
-                        mensajeJ.setText("¡UsuarioAgregado con éxito!");
-                        llenartabla();
-                    } else {
-                        mensajeJ.setText("¡Error al agregar Usuario!");
+                        if (res > 0) {
+                            mensajeJ.setText("¡UsuarioAgregado con éxito!");
+                            llenartabla();
+                        } else {
+                            mensajeJ.setText("¡Error al agregar Usuario!");
+                        }
+
+                        limpiar();
+                        con.close();
+
+                    } catch (HeadlessException | SQLException f) {
+                        System.err.println(f);
                     }
-
-                    limpiar();
-                    con.close();
-
-                } catch (HeadlessException | SQLException f) {
-                    System.err.println(f);
                 }
             }
         });
@@ -109,6 +113,9 @@ public class Usuarios extends Administrador {
         modificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (rolComboBox.getSelectedIndex() == 0) {
+                    mensajeJ.setText("No haz elegido un rol");
+                } else {
                 buscar_usuario();
                 Conexion conBD = new Conexion();
 
@@ -132,7 +139,7 @@ public class Usuarios extends Administrador {
                         llenartabla();
 
                     } else {
-                        mensajeJ.setText("Error al Modificar Usuario, ingrese un nickname");
+                        mensajeJ.setText("Error al Modificar Usuario");
                     }
 
                     limpiar();
@@ -141,6 +148,7 @@ public class Usuarios extends Administrador {
                 } catch (HeadlessException | SQLException f) {
                     System.err.println(f);
                 }
+            }
             }
         });
 
@@ -162,7 +170,7 @@ public class Usuarios extends Administrador {
                         mensajeJ.setText("¡Usuario Eliminado con éxito!");
                         llenartabla();
                     } else {
-                        mensajeJ.setText("Error al Eliminar Usuario, ingrese un nickname válido");
+                        mensajeJ.setText("Error al Eliminar Usuario");
                     }
                     limpiar();
                     con.close();
@@ -171,7 +179,9 @@ public class Usuarios extends Administrador {
                     System.err.println(f);
                 }
             }
+
         });
+
     }
     private void limpiar() {
         rolComboBox.setSelectedIndex(0);
