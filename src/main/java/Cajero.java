@@ -42,8 +42,6 @@ public class Cajero extends Login{
     private JButton limpiar;
     private JLabel cajeroL;
 
-    private Connection con;
-
     private int filaSeleccionada;
 
     private ArrayList<comprandoProductos> listaProductos = new ArrayList<>();
@@ -67,6 +65,7 @@ public class Cajero extends Login{
                 cantidadTF.setText(cantidadSPN.getValue().toString());
             }
         });
+        //Llamada a la pantalla de cajero
         //Llamada a la pantalla de cajero
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
