@@ -167,7 +167,7 @@ public class Clientes extends Login {
 
                 JTable tablaCajeroe = cajero.enviarJTable();
                 cajero.actualizarTabla(tablaCajeroe, cajero.getListaProductos());
-                System.out.println("Esta es una prueba" + cajero.getListaProductos().toString());
+                //System.out.println("Esta es una prueba" + cajero.getListaProductos().toString());
                 //Envio del cliente agregado a la compra a la clase cajero cedula
                 Clientes.clienteAgregado = cedula.getText();
 

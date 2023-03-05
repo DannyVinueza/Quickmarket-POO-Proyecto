@@ -41,7 +41,6 @@ public class Cajero extends Login{
     private JTextField cantidadTF;
     private JButton limpiar;
     private JLabel cajeroL;
-    private JTextField formaPago;
 
     private int filaSeleccionada;
 
@@ -69,7 +68,7 @@ public class Cajero extends Login{
         setBounds(0, 0,35,100);
         getContentPane().add(scrollTabla);*/
 
-        cantidadTF.setEnabled(false);
+
         cantidadSPN.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -194,7 +193,7 @@ public class Cajero extends Login{
                         mensajeTXT.setText("No se encuentra el producto!!!!");
                     }
                     con.close();
-                    System.out.println(listaProductos.toString());
+                    //System.out.println(listaProductos.toString());
                     actualizarTabla(productosCompra, listaProductos);
                 }catch (SQLException es){
                     System.out.println("Se presento un error" + es.getMessage());
@@ -406,7 +405,7 @@ public class Cajero extends Login{
                         // Cerrar documento
                         document.close();
                         //documentoPdf.close();
-                        System.out.println("La factura se ha generado correctamente");
+                        //System.out.println("La factura se ha generado correctamente");
                         mensajeTXT.setText("La factura se ha generado correctamente");
 
                         //Guardar la factura y detalle de factura en la Base de Datos
@@ -497,9 +496,10 @@ public class Cajero extends Login{
         String capturarIDtienda = "SELECT id_tienda FROM quickmarket";
         String capturarIDcli = "SELECT id_cliente FROM clientes WHERE cedula = ?";
         String capturarIDusuario = "SELECT idusuario FROM usuarios WHERE nombre_completo = '" + cajeroVen + "'";
-        int id_tiendaBD = 0;
-        int id_CLI = 0;
-        int id_cajero = 0;
+
+        int id_tiendaBD = 0;//Id de la tienda
+        int id_CLI = 0;//Id del cliente
+        int id_cajero = 0;//Id del cajero
 
         Conexion conINS = new Conexion();
         con = conINS.conectar();
@@ -549,10 +549,28 @@ public class Cajero extends Login{
             String valorPagarBDstr = dc.format(valorPagarBD);
             valorPagarBDstr = valorPagarBDstr.replace(",",".");
             ps.setBigDecimal(7, new BigDecimal(valorPagarBDstr));
-
-            System.out.println(ps);
+            //System.out.println(ps);
 
             int cont = ps.executeUpdate();
+
+
+            //Insertar datos en la tabla detalle de factura
+            int idVentaBD = obtenerUltimoIdVenta(id_CLI);//Guardar el id de venta mas reciente
+
+            String insertarProdcutosDF = "INSERT INTO detallefacturas (id_venta, id_producto, cantidad, precio, subtotal) VALUES (?, ?, ?, ?, ?)";
+            PreparedStatement insPDF = con.prepareStatement(insertarProdcutosDF);
+
+            for (comprandoProductos p: listaProductos){
+                insPDF.setInt(1, idVentaBD);
+                insPDF.setInt(2, p.getIdProductos());
+                insPDF.setInt(3, p.getCantidadP());
+                insPDF.setBigDecimal(4, new BigDecimal(p.getPrecioP()));
+                insPDF.setBigDecimal(5, new BigDecimal((p.getCantidadP())*(p.getPrecioP())));
+
+                insPDF.executeUpdate();
+            }
+
+
             if(cont > 0){
                 JOptionPane.showMessageDialog(null, "Factura en la Base de Datos generada");
             }else{
@@ -593,5 +611,17 @@ public class Cajero extends Login{
 
     public static ArrayList<comprandoProductos> getListaProductos() {
         return listaProductos;
+    }
+
+    public int obtenerUltimoIdVenta(int idCliBD) throws SQLException {
+        String capturarIDVenta = "SELECT id_venta FROM facturas WHERE id_cliente = " + idCliBD + " ORDER BY id_venta DESC LIMIT 1";
+        Statement stIDV = con.createStatement();
+        ResultSet resIDV = stIDV.executeQuery(capturarIDVenta);
+
+        int idVentaBD = 0;
+        if (resIDV.next()) {
+            idVentaBD = resIDV.getInt(1);
+        }
+        return idVentaBD;
     }
 }
