@@ -46,7 +46,7 @@ public class Clientes extends Login {
                 ResultSet rs;
                 try {
                     con = conBD.conectar();
-                    ps = con.prepareStatement("SELECT * FROM clientes WHERE id_cliente = ?" );
+                    ps = con.prepareStatement("SELECT * FROM clientes WHERE cedula = ?" );
                     ps.setString(1, cedula.getText());
                     rs = ps.executeQuery();
                     try{
@@ -57,7 +57,7 @@ public class Clientes extends Login {
                                 textFieldNom_Cli.setText(rs.getString("Nombre"));
                                 textFieldDirec_Cli.setText(rs.getString("Direccion"));
                                 textFieldTlf_Cli.setText(rs.getString("Telefono"));
-                                textFieldCorreo_Cli.setText(rs.getString("correo_elec"));
+                                textFieldCorreo_Cli.setText(rs.getString("correo"));
                                 Mensajelabel.setText("Cliente si EXISTE");
                             }else{
                                 Mensajelabel.setText("Cliente no EXISTE");
@@ -83,7 +83,7 @@ public class Clientes extends Login {
                 Conexion conBD = new Conexion();
                 try {
                     con = conBD.conectar();
-                    ps = con.prepareStatement("UPDATE clientes SET nombre = ?, direccion = ?, telefono = ?, correo_elec = ? WHERE id_cliente ="+cedula.getText() );
+                    ps = con.prepareStatement("UPDATE clientes SET nombre = ?, direccion = ?, telefono = ?, correo = ? WHERE cedula ="+cedula.getText() );
                     try{
 
                         if( !cedula.getText().matches("[0-9]*") ){
@@ -116,7 +116,7 @@ public class Clientes extends Login {
                 Conexion conBD = new Conexion();
                 try {
                     con = conBD.conectar();
-                    ps = con.prepareStatement("INSERT INTO clientes( id_cliente, nombre, direccion , telefono , correo_elec ) values (?,?,?,?,?) ");
+                    ps = con.prepareStatement("INSERT INTO clientes( cedula, nombre, direccion , telefono , correo ) values (?,?,?,?,?) ");
                     try{
 
                         if( !cedula.getText().matches("[0-9]*") ){
