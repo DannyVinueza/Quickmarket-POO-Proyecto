@@ -16,7 +16,7 @@ public class Login extends JFrame{
     private JComboBox rolComboBox;
     private JLabel mensaje;
     private JButton buttonOK;
-    private Connection con;
+    public Connection con;
     public int index;
     public static String usuarioLogeado;
 
