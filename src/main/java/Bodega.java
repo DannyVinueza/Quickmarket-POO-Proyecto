@@ -76,12 +76,110 @@ public class Bodega extends Administrador{
                             precioTXT.setText(reBuscar.getString(4));
                             stockSpn.setValue(reBuscar.getInt(5));
                         }
+
+                        mensaje.setText("¡Producto Encontrado!");
                     }else{
-                        mensaje.setText("Producto no encontrado");
+                        mensaje.setText("¡No existe éste Producto!");
                     }
                     con.close();
                 }catch (SQLException es){
                     System.out.println("Se presento un error" + es.getMessage());
+                }
+            }
+        });
+
+        agregar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Conexion conBD = new Conexion();
+
+                try {
+                    con = conBD.conectar();
+                    ps = con.prepareStatement("INSERT INTO Productos (nombre, descripcion, precio, stock) VALUES (?,?,?,?) ");
+                    ps.setString(1, productoTXT.getText());
+                    ps.setString(2, descripcionTXT.getText());
+                    ps.setString(3, precioTXT.getText());
+                    ps.setString(4, Integer.toString(cantidad_stock));
+                    System.out.println(ps);
+                    int res = ps.executeUpdate();
+
+                    if (res > 0) {
+                        mensaje.setText("¡Producto Agregado con éxito!");
+                        llenartabla();
+                    } else {
+                        mensaje.setText("¡Error al agregar Producto!");
+                    }
+
+                    limpiar();
+                    con.close();
+
+                } catch (HeadlessException | SQLException f) {
+                    System.err.println(f);
+                }
+            }
+        });
+
+        modificar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscar_prducto();
+                Conexion conBD = new Conexion();
+
+                try {
+                    con = conBD.conectar();
+                    ps = con.prepareStatement("UPDATE productos SET nombre=?, descripcion=?, precio=?, stock=? Where nombre = ?");
+
+                    ps.setString(1, productoTXT.getText());
+                    ps.setString(2, descripcionTXT.getText());
+                    ps.setString(3, precioTXT.getText());
+                    ps.setString(4, Integer.toString(cantidad_stock));
+                    ps.setString(5, productoTXT.getText());
+
+                    System.out.println(ps);
+
+                    int res = ps.executeUpdate();
+
+                    if (res > 0) {
+                        mensaje.setText("¡Producto modificado con éxito!");
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al Modificar Producto, ingrese un Nombre Válido");
+                    }
+
+                    limpiar();
+                    con.close();
+
+                } catch (HeadlessException | SQLException f) {
+                    System.err.println(f);
+                }
+            }
+        });
+
+        eliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscar_prducto();
+                Conexion conBD = new Conexion();
+
+
+                try {
+                    con = conBD.conectar();
+                    ps = con.prepareStatement("DELETE FROM Productos  Where id_producto = (Select id_producto From Productos where nombre=?)");
+                    ps.setString(1, productoTXT.getText());
+
+                    int res = ps.executeUpdate();
+
+                    if (res > 0) {
+                        mensaje.setText("¡Producto Eliminado con éxito!");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al Eliminar Producto, ingrese un nombre válido");
+                    }
+
+                    limpiar();
+                    con.close();
+
+                } catch (HeadlessException | SQLException f) {
+                    System.err.println(f);
                 }
             }
         });
@@ -101,15 +199,33 @@ public class Bodega extends Administrador{
         tableProductos.setModel(modelo);
     }
 
+    private void buscar_prducto(){
+        Conexion conBD = new Conexion();
+
+        try{
+            con = conBD.conectar();
+            String buscar = "SELECT * FROM productos WHERE nombre = '" + productoTXT.getText() + "'";
+            Statement stBuscar = con.createStatement();
+            ResultSet reBuscar = stBuscar.executeQuery(buscar);
+
+            if (reBuscar.next()){
+                mensaje.setText("¡Producto Encontrado!");
+            }else{
+                mensaje.setText("No se pudo realizar, ¡producto no encontrado!");
+            }
+            con.close();
+        }catch (SQLException es){
+            System.out.println("Se presento un error" + es.getMessage());
+        }
+    }
+
     private DefaultTableModel mostrarProductos()
     {
         String []  nombresColumnas = {"Id Producto","Nombre","Descripcón","Precio","Stock"};
         String [] registros = new String[5];
 
         DefaultTableModel modelo = new DefaultTableModel(null,nombresColumnas);
-
         String sql = "SELECT * FROM productos";
-
         Conexion conBD = new Conexion();
 
 
