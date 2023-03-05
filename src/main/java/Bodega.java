@@ -9,14 +9,12 @@ public class Bodega extends Administrador{
     private JTextField precioTextField;
     private JSpinner spinner1;
     private JTable table1;
-    private JButton button5;
-    private JButton button6;
-    private JButton button7;
     private JButton regresarL;
     private JButton buscar;
     private JButton agregar;
     private JButton eliminar;
     private JPanel bodega_content;
+    private JButton modificar;
 
     public Bodega(){
         super(2);
