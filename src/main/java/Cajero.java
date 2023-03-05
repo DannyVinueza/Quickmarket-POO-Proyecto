@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -40,11 +41,12 @@ public class Cajero extends Login{
     private JTextField cantidadTF;
     private JButton limpiar;
     private JLabel cajeroL;
+    private JTextField formaPago;
 
     private int filaSeleccionada;
 
-    private ArrayList<comprandoProductos> listaProductos = new ArrayList<>();
-    private String cajeroVen;
+    private static ArrayList<comprandoProductos> listaProductos = new ArrayList<>();
+    private String cajeroVen;//Guarda el cajero que esta realizando las ventas
 
     public static DecimalFormat dc = new DecimalFormat("##.00");
     private Label cedula;
@@ -53,6 +55,11 @@ public class Cajero extends Login{
     private Label textFieldTlf_Cli;
     private Label textFieldCorreo_Cli;
 
+    private double valorPagarBD;
+
+    public Cajero(){
+
+    }
     public Cajero(int ind){
         //JScrollPane scroll = new JScrollPane(productosCompra);
         /*scrollTabla = new JScrollPane(productosCompra);
@@ -188,19 +195,7 @@ public class Cajero extends Login{
                     }
                     con.close();
                     System.out.println(listaProductos.toString());
-                    DefaultTableModel modTabla = new DefaultTableModel(new Object[]{"ID", "Nombre", "Descripción", "Precio", "Cantidad"}, 0);
-                    productosCompra.setModel(modTabla);
-                    modTabla.addRow(new Object[]{"ID", "Nombre", "Descripción", "Precio", "Cantidad"});
-                    for(comprandoProductos pr: listaProductos){
-                        Object[] fila = new Object[]{
-                                pr.getIdProductos(),
-                                pr.getNombreP(),
-                                pr.getDescripcionP(),
-                                pr.getPrecioP(),
-                                pr.getCantidadP()
-                        };
-                        modTabla.addRow(fila);
-                    }
+                    actualizarTabla(productosCompra, listaProductos);
                 }catch (SQLException es){
                     System.out.println("Se presento un error" + es.getMessage());
                 }
@@ -251,171 +246,186 @@ public class Cajero extends Login{
 
                 try{
                     con = conCli.conectar();
-                    String nombreCliente = "";
-                    String direccionCliente = "";
-                    String correo = "";
-                    String telefono = "";
-                    String cliente = "SELECT * FROM clientes WHERE cedula = '" + 1755355422 + "'";
-                    String empresaDatos = "SELECT * FROM quickmarket";
+                    if(!listaProductos.isEmpty()){
+                        String nombreCliente = "";
+                        String direccionCliente = "";
+                        String correo = "";
+                        String telefono = "";
+                        String cliente = "SELECT * FROM clientes WHERE cedula = '" + Clientes.obtenerClienteAgregado() + "'";
+                        String empresaDatos = "SELECT * FROM quickmarket";
 
-                    //Ejecucion para la consulta de los datos del cliente
-                    Statement stmt;
-                    ResultSet rs;
-                    try {
-                        stmt = con.createStatement();
-                        rs = stmt.executeQuery(cliente);
-                        while(rs.next()){
-                            nombreCliente = rs.getString(2);
-                            direccionCliente = rs.getString(3);
-                            correo = rs.getString(4);
-                            telefono = rs.getString(5);
+                        //Ejecucion para la consulta de los datos del cliente
+                        Statement stmt;
+                        ResultSet rs;
+                        try {
+                            stmt = con.createStatement();
+                            rs = stmt.executeQuery(cliente);
+                            while(rs.next()){
+                                nombreCliente = rs.getString(2);
+                                direccionCliente = rs.getString(3);
+                                correo = rs.getString(4);
+                                telefono = rs.getString(5);
+                            }
+
+                        }catch (SQLException ess){
+                            System.out.println(ess);
+                        }
+                        String nombreFactura = "factura-" + nombreCliente + ".pdf";
+
+                        PdfWriter.getInstance(document, new FileOutputStream(nombreFactura));
+                        document.open();
+
+                        // Añadir título
+                        Font titleFont = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD);
+                        Paragraph title = new Paragraph("Factura N° " + (int) (Math.random() * 9999) + 1000, titleFont);
+                        title.setAlignment(Element.ALIGN_CENTER);
+                        document.add(title);
+
+                        // Añadir datos del cliente
+                        Font subtitleFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
+                        Paragraph subtitle = new Paragraph("Datos del cliente", subtitleFont);
+                        document.add(subtitle);
+
+                        //Parrafo para el cliente
+                        Paragraph nombre = new Paragraph("Nombre: " + nombreCliente);
+                        Paragraph direccion = new Paragraph("Dirección: " + direccionCliente);
+                        Paragraph ciudad = new Paragraph("Correo: " + correo);
+                        Paragraph pais = new Paragraph("Telefono: " + telefono);
+                        Paragraph vacio = new Paragraph("       ");//Insertar un salto de linea en el pdf
+
+                        //Añadimos al pdf
+                        document.add(nombre);
+                        document.add(direccion);
+                        document.add(ciudad);
+                        document.add(pais);
+
+                        // Añadir datos de la empresa
+                        Paragraph datosCli = new Paragraph("Datos de la empresa", subtitleFont);
+                        document.add(datosCli);
+
+                        String empresa = "";
+                        String correoEmpresa = "";
+                        String telefonoEmpresa = "";
+                        String nomCajero = cajeroVen;
+
+                        try {
+                            stmt = con.createStatement();
+                            rs = stmt.executeQuery(empresaDatos);
+                            while(rs.next()){
+                                empresa = rs.getString(2);
+                                correoEmpresa = rs.getString(3);
+                                telefonoEmpresa = rs.getString(4);
+                            }
+
+                        }catch (SQLException esas){
+                            System.out.println(esas);
                         }
 
-                    }catch (SQLException ess){
-                        System.out.println(ess);
-                    }
-                    String nombreFactura = "factura-" + nombreCliente + ".pdf";
+                        Paragraph empresaNombre = new Paragraph("Nombre del minimarket: " + empresa);
+                        Paragraph corEmpresa= new Paragraph("Correo del minimarket: " + correoEmpresa);
+                        Paragraph teleEmpresa = new Paragraph("Telefono del minimarket: " + telefonoEmpresa);
+                        Paragraph cajVendiendo = new Paragraph("Nombre del cajero: " + nomCajero);
 
-                    PdfWriter.getInstance(document, new FileOutputStream(nombreFactura));
-                    document.open();
+                        document.add(empresaNombre);
+                        document.add(corEmpresa);
+                        document.add(teleEmpresa);
+                        document.add(cajVendiendo);
 
-                    // Añadir título
-                    Font titleFont = new Font(Font.FontFamily.HELVETICA, 20, Font.BOLD);
-                    Paragraph title = new Paragraph("Factura N° " + (int) (Math.random() * 9999) + 1000, titleFont);
-                    title.setAlignment(Element.ALIGN_CENTER);
-                    document.add(title);
+                        // Añadir detalles de la factura
+                        Paragraph detalles = new Paragraph("Detalles de la factura\n", subtitleFont);
+                        document.add(detalles);
+                        document.add(vacio);
 
-                    // Añadir datos del cliente
-                    Font subtitleFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
-                    Paragraph subtitle = new Paragraph("Datos del cliente", subtitleFont);
-                    document.add(subtitle);
+                        PdfPTable tabla = new PdfPTable(6);
+                        tabla.setWidthPercentage(100);
+                        PdfPCell celda1 = new PdfPCell(new Phrase("ID"));
+                        PdfPCell celda2 = new PdfPCell(new Phrase("Nombre"));
+                        PdfPCell celda3 = new PdfPCell(new Phrase("Descripcion"));
+                        PdfPCell celda4 = new PdfPCell(new Phrase("Precio unitario"));
+                        PdfPCell celda5 = new PdfPCell(new Phrase("Cantidad"));
+                        PdfPCell celda6 = new PdfPCell(new Phrase("Total"));
 
-                    //Parrafo para el cliente
-                    Paragraph nombre = new Paragraph("Nombre: " + nombreCliente);
-                    Paragraph direccion = new Paragraph("Dirección: " + direccionCliente);
-                    Paragraph ciudad = new Paragraph("Correo: " + correo);
-                    Paragraph pais = new Paragraph("Telefono: " + telefono);
-                    Paragraph vacio = new Paragraph("       ");//Insertar un salto de linea en el pdf
+                        tabla.addCell(celda1);
+                        tabla.addCell(celda2);
+                        tabla.addCell(celda3);
+                        tabla.addCell(celda4);
+                        tabla.addCell(celda5);
+                        tabla.addCell(celda6);
 
-                    //Añadimos al pdf
-                    document.add(nombre);
-                    document.add(direccion);
-                    document.add(ciudad);
-                    document.add(pais);
+                        // Añadir filas con los detalles de los productos
 
-                    // Añadir datos de la empresa
-                    Paragraph datosCli = new Paragraph("Datos de la empresa", subtitleFont);
-                    document.add(datosCli);
+                        double totalPagarPC = 0;
+                        for(comprandoProductos pro: listaProductos){
+                            int idPC = pro.getIdProductos();
+                            String nomPC = pro.getNombreP();
+                            String desPC = pro.getDescripcionP();
+                            double prePC = pro.getPrecioP();
+                            int cantPC = pro.getCantidadP();
+                            double totalPC = prePC * cantPC;
+                            totalPagarPC += totalPC;
 
-                    String empresa = "";
-                    String correoEmpresa = "";
-                    String telefonoEmpresa = "";
-                    String nomCajero = cajeroVen;
-
-                    try {
-                        stmt = con.createStatement();
-                        rs = stmt.executeQuery(empresaDatos);
-                        while(rs.next()){
-                            empresa = rs.getString(2);
-                            correoEmpresa = rs.getString(3);
-                            telefonoEmpresa = rs.getString(4);
+                            //Añadimos los datos a las celdas filas
+                            tabla.addCell(dc.format(idPC));
+                            tabla.addCell(nomPC);
+                            tabla.addCell(desPC);
+                            tabla.addCell(dc.format(prePC));
+                            tabla.addCell(dc.format(cantPC));
+                            tabla.addCell(dc.format(totalPC));
                         }
+                        document.add(tabla);
 
-                    }catch (SQLException esas){
-                        System.out.println(esas);
+                        // Añadir total de la factura
+                        double totalFactura = totalPagarPC;
+                        double ivaA = totalFactura * 0.12;
+                        Paragraph subtotal = new Paragraph("Sub Total: " + dc.format(totalFactura));
+                        Paragraph iva = new Paragraph("Iva: " + dc.format(ivaA));
+                        Paragraph totalPago = new Paragraph("Total a pagar: " + dc.format(ivaA + totalFactura));
+
+                        valorPagarBD = ivaA + totalFactura;
+
+                        //Alineamos a la derecha
+                        subtotal.setAlignment(Element.ALIGN_RIGHT);
+                        iva.setAlignment(Element.ALIGN_RIGHT);
+                        totalPago.setAlignment(Element.ALIGN_RIGHT);
+
+                        //Añadir al documento el subtotal, iva, total a pagar
+                        document.add(subtotal);
+                        document.add(iva);
+                        document.add(totalPago);
+
+                        //Pie de factura
+                        PdfPTable tablaPie = new PdfPTable(2);
+                        tablaPie.setWidthPercentage(100);
+                        tablaPie.addCell("Cajero: "+ cajeroVen + " ------------------");
+                        tablaPie.addCell("Cliente: " + nombreCliente + " ------------------");
+
+                        //Añadimos el pie un espacio en blanco al pdf
+                        document.add(vacio);
+                        document.add(tablaPie);
+
+                        // Cerrar documento
+                        document.close();
+                        //documentoPdf.close();
+                        System.out.println("La factura se ha generado correctamente");
+                        mensajeTXT.setText("La factura se ha generado correctamente");
+
+                        //Guardar la factura y detalle de factura en la Base de Datos
+                        mensajeTXT.setText("El valor total a pagar es: " + valorPagarBD);
+                        guardarProductosComprados();
+
+
+                        //Vaciar pantalla
+                        limpiar();
+                        listaProductos.clear();
+                        DefaultTableModel model = (DefaultTableModel) productosCompra.getModel();
+                        model.setRowCount(0);
+                        productosCompra.revalidate();
+                        DefaultTableModel modelCliente  = (DefaultTableModel) tableClientes.getModel();
+                        modelCliente.setRowCount(0);
+                        tableClientes.revalidate();
+                    }else{
+                        mensajeTXT.setText("Debe ingresar productos a la lista para facturar.");
                     }
-
-                    Paragraph empresaNombre = new Paragraph("Nombre del minimarket: " + empresa);
-                    Paragraph corEmpresa= new Paragraph("Correo del minimarket: " + correoEmpresa);
-                    Paragraph teleEmpresa = new Paragraph("Telefono del minimarket: " + telefonoEmpresa);
-                    Paragraph cajVendiendo = new Paragraph("Nombre del cajero: " + nomCajero);
-
-                    document.add(empresaNombre);
-                    document.add(corEmpresa);
-                    document.add(teleEmpresa);
-                    document.add(cajVendiendo);
-
-                    // Añadir detalles de la factura
-                    Paragraph detalles = new Paragraph("Detalles de la factura\n", subtitleFont);
-                    document.add(detalles);
-                    document.add(vacio);
-
-                    PdfPTable tabla = new PdfPTable(6);
-                    tabla.setWidthPercentage(100);
-                    PdfPCell celda1 = new PdfPCell(new Phrase("ID"));
-                    PdfPCell celda2 = new PdfPCell(new Phrase("Nombre"));
-                    PdfPCell celda3 = new PdfPCell(new Phrase("Descripcion"));
-                    PdfPCell celda4 = new PdfPCell(new Phrase("Precio unitario"));
-                    PdfPCell celda5 = new PdfPCell(new Phrase("Cantidad"));
-                    PdfPCell celda6 = new PdfPCell(new Phrase("Total"));
-
-                    tabla.addCell(celda1);
-                    tabla.addCell(celda2);
-                    tabla.addCell(celda3);
-                    tabla.addCell(celda4);
-                    tabla.addCell(celda5);
-                    tabla.addCell(celda6);
-
-                    // Añadir filas con los detalles de los productos
-
-                    double totalPagarPC = 0;
-                    for(comprandoProductos pro: listaProductos){
-                        int idPC = pro.getIdProductos();
-                        String nomPC = pro.getNombreP();
-                        String desPC = pro.getDescripcionP();
-                        double prePC = pro.getPrecioP();
-                        int cantPC = pro.getCantidadP();
-                        double totalPC = prePC * cantPC;
-                        totalPagarPC += totalPC;
-
-                        //Añadimos los datos a las celdas filas
-                        tabla.addCell(dc.format(idPC));
-                        tabla.addCell(nomPC);
-                        tabla.addCell(desPC);
-                        tabla.addCell(dc.format(prePC));
-                        tabla.addCell(dc.format(cantPC));
-                        tabla.addCell(dc.format(totalPC));
-                    }
-                    document.add(tabla);
-
-                    // Añadir total de la factura
-                    double totalFactura = totalPagarPC;
-                    double ivaA = totalFactura * 0.12;
-                    Paragraph subtotal = new Paragraph("Sub Total: " + dc.format(totalFactura));
-                    Paragraph iva = new Paragraph("Iva: " + dc.format(ivaA));
-                    Paragraph totalPago = new Paragraph("Total a pagar: " + dc.format(ivaA + totalFactura));
-
-                    //Alineamos a la derecha
-                    subtotal.setAlignment(Element.ALIGN_RIGHT);
-                    iva.setAlignment(Element.ALIGN_RIGHT);
-                    totalPago.setAlignment(Element.ALIGN_RIGHT);
-
-                    //Añadir al documento el subtotal, iva, total a pagar
-                    document.add(subtotal);
-                    document.add(iva);
-                    document.add(totalPago);
-
-                    //Pie de factura
-                    PdfPTable tablaPie = new PdfPTable(2);
-                    tablaPie.setWidthPercentage(100);
-                    tablaPie.addCell("Cajero: "+ cajeroVen + " ------------------");
-                    tablaPie.addCell("Cliente: " + nombreCliente + " ------------------");
-
-                    //Añadimos el pie un espacio en blanco al pdf
-                    document.add(vacio);
-                    document.add(tablaPie);
-
-                    // Cerrar documento
-                    document.close();
-                    //documentoPdf.close();
-                    System.out.println("La factura se ha generado correctamente");
-
-                    //Vaciar pantalla
-                    limpiar();
-                    listaProductos.clear();
-                    DefaultTableModel model = (DefaultTableModel) productosCompra.getModel();
-                    model.setRowCount(0);
-                    productosCompra.revalidate();
 
                 }catch (Exception ex){
                     System.out.println(ex);
@@ -471,7 +481,7 @@ public class Cajero extends Login{
 
         // Crear el modelo de la tabla de clientes
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Cédula");
+        model.addColumn("module");
         model.addColumn("Nombre");
         model.addColumn("Dirección");
         model.addColumn("Teléfono");
@@ -479,5 +489,109 @@ public class Cajero extends Login{
         tableClientes.setModel(model);
         // Devolver la tabla de clientes
         return tableClientes;
+    }
+
+    public void guardarProductosComprados(){
+        //System.out.println("Este es el valor que se guardara en la BD " + (valorPagarBD + 100));
+        String insertFactura = "INSERT INTO facturas (idusuario, id_tienda, id_cliente, id_producto, fecha_venta, forma_pago, importe_total) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String capturarIDtienda = "SELECT id_tienda FROM quickmarket";
+        String capturarIDcli = "SELECT id_cliente FROM clientes WHERE cedula = ?";
+        String capturarIDusuario = "SELECT idusuario FROM usuarios WHERE nombre_completo = '" + cajeroVen + "'";
+        int id_tiendaBD = 0;
+        int id_CLI = 0;
+        int id_cajero = 0;
+
+        Conexion conINS = new Conexion();
+        con = conINS.conectar();
+
+        try{
+
+
+            //Obtener el id de la tienda para insertar en la tabla factura
+            Statement idTiendaBD = con.createStatement();
+            ResultSet resultIDtienda = idTiendaBD.executeQuery(capturarIDtienda);
+            while (resultIDtienda.next()){
+                id_tiendaBD = resultIDtienda.getInt(1);
+            }
+
+            //Obtener el id del cliente que esta comprando
+            PreparedStatement psIDCLI = con.prepareStatement(capturarIDcli);
+            psIDCLI.setString(1, Clientes.obtenerClienteAgregado());
+            ResultSet resIDCli = psIDCLI.executeQuery();
+
+            if (resIDCli.next()){
+                id_CLI = resIDCli.getInt(1);
+            }
+
+            //Obtener el id del cajero que esta atentiendo
+            Statement stIDCj = con.createStatement();
+            ResultSet rsIDCal = stIDCj.executeQuery(capturarIDusuario);
+
+            if(rsIDCal.next()){
+                id_cajero = rsIDCal.getInt(1);
+            }
+
+            //Ingresar la forma de pago
+            String mensajePago;
+
+            do {
+                mensajePago = JOptionPane.showInputDialog(null, "Que tipo de pago va a realizar: ");
+            } while (mensajePago == null || mensajePago.trim().isEmpty());
+
+            //Insertar los datos en la factura
+            PreparedStatement ps =con.prepareStatement(insertFactura);
+            ps.setInt(1,id_cajero);
+            ps.setInt(2,id_tiendaBD);
+            ps.setInt(3, id_CLI);
+            ps.setInt(4,2);
+            ps.setDate(5, new Date(System.currentTimeMillis()));
+            ps.setString(6,mensajePago);
+            String valorPagarBDstr = dc.format(valorPagarBD);
+            valorPagarBDstr = valorPagarBDstr.replace(",",".");
+            ps.setBigDecimal(7, new BigDecimal(valorPagarBDstr));
+
+            System.out.println(ps);
+
+            int cont = ps.executeUpdate();
+            if(cont > 0){
+                JOptionPane.showMessageDialog(null, "Factura en la Base de Datos generada");
+            }else{
+                JOptionPane.showMessageDialog(null, "Erro en generar la factura en la Base de Datos");
+            }
+        }catch (SQLException exs){
+            System.out.println(exs);
+        }
+
+
+    }
+
+    public void actualizarTabla(JTable tabla, ArrayList<comprandoProductos> listProductos) {
+        DefaultTableModel modTabla = new DefaultTableModel(new Object[]{"ID", "Nombre", "Descripción", "Precio", "Cantidad"}, 0);
+        tabla.setModel(modTabla);
+        modTabla.addRow(new Object[]{"ID", "Nombre", "Descripción", "Precio", "Cantidad"});
+        for (comprandoProductos pr : listProductos) {
+            Object[] fila = new Object[]{
+                    pr.getIdProductos(),
+                    pr.getNombreP(),
+                    pr.getDescripcionP(),
+                    pr.getPrecioP(),
+                    pr.getCantidadP()
+            };
+            modTabla.addRow(fila);
+        }
+    }
+
+
+    public Cajero(JTable productosCompra, ArrayList<comprandoProductos> listaProductos) {
+        this.productosCompra = productosCompra;
+        this.listaProductos = listaProductos;
+    }
+
+    public JTable enviarJTable() {
+        return productosCompra;
+    }
+
+    public static ArrayList<comprandoProductos> getListaProductos() {
+        return listaProductos;
     }
 }

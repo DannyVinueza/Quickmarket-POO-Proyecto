@@ -72,6 +72,7 @@ public class Login extends JFrame{
                         if (user != null) {
                             dispose();
 
+                            Login.usuarioLogeado = usuarioTextField.getText();
                             usuarioTextField.setText("");
                             contraseñaPasswordField.setText("");
 

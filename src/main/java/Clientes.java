@@ -22,6 +22,7 @@ public class Clientes extends Login {
     private JButton modificar;
     private JButton aceptar;
     private Connection con;
+    public static String clienteAgregado;
 
     public Clientes(int ind){
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
@@ -164,16 +165,22 @@ public class Clientes extends Login {
                 Object[] rowData = {cedulaCliente, nombreCliente, direccionCliente, telefonoCliente, correoCliente};
                 model.addRow(rowData);
 
+                JTable tablaCajeroe = cajero.enviarJTable();
+                cajero.actualizarTabla(tablaCajeroe, cajero.getListaProductos());
+                System.out.println("Esta es una prueba" + cajero.getListaProductos().toString());
+                //Envio del cliente agregado a la compra a la clase cajero cedula
+                Clientes.clienteAgregado = cedula.getText();
+
 
             }
         });
 
 
-
-
     }
 
-
+    public static String obtenerClienteAgregado() {
+        return clienteAgregado;
+    }
 
 
 }
