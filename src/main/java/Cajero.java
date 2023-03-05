@@ -28,12 +28,14 @@ public class Cajero extends Login{
     private JTextField precioVenTXT;
     private JTextField cantidadTF;
     private JButton limpiar;
+    private JLabel cajeroL;
 
     private Connection con;
 
     private int filaSeleccionada;
 
-    private ArrayList<comprandoProductos> listaProductos = new ArrayList<>();;
+    private ArrayList<comprandoProductos> listaProductos = new ArrayList<>();
+    private String cajeroVen;
 
     public Cajero(int ind){
         //JScrollPane scroll = new JScrollPane(productosCompra);
@@ -61,6 +63,21 @@ public class Cajero extends Login{
         pack();
         setVisible(true);
 
+        String us = "SELECT * FROM usuarios WHERE usuario = '" + Login.obtenerUsuarioLogeado() + "'";
+        try{
+            Conexion conUS = new Conexion();
+            con = conUS.conectar();
+            Statement usSt = con.createStatement();
+            ResultSet reUsu = usSt.executeQuery(us);
+            if(reUsu.next()){
+                cajeroVen = reUsu.getString(3);
+                cajeroL.setText(cajeroVen);
+                con.close();
+            }
+        }catch (SQLException ex){
+            System.out.println(ex);
+        }
+        //cajeroL.setText(Login.obtenerUsuarioLogeado());
         regresarL.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -207,6 +224,12 @@ public class Cajero extends Login{
                 super.mouseClicked(e);
                 filaSeleccionada = productosCompra.getSelectedRow();
                 System.out.println(filaSeleccionada);
+            }
+        });
+        facturarButton.addActionListener(new ActionListener() {//Boton para generar la factura
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }

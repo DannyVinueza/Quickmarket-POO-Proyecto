@@ -18,6 +18,7 @@ public class Login extends JFrame{
     private JButton buttonOK;
     private Connection con;
     public int index;
+    public static String usuarioLogeado;
 
     String imgs[] = {
             "Imagenes/Supermercado.png", //Selleccion 0
@@ -86,6 +87,7 @@ public class Login extends JFrame{
 
                         if (user != null) {
                             dispose();
+                            Login.usuarioLogeado = usuarioTextField.getText();
                             usuarioTextField.setText("");
                             contraseñaPasswordField.setText("");
 
@@ -142,5 +144,9 @@ public class Login extends JFrame{
 
     public static void main(String[] args) {
         Login login = new Login();
+    }
+
+    public static String obtenerUsuarioLogeado() {
+        return usuarioLogeado;
     }
 }
