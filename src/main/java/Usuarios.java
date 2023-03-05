@@ -74,7 +74,7 @@ public class Usuarios extends Administrador {
                 }
             }
         });
-/*
+
         agregar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,19 +82,19 @@ public class Usuarios extends Administrador {
 
                 try {
                     con = conBD.conectar();
-                    ps = con.prepareStatement("INSERT INTO Productos (nombre, descripcion, precio, stock) VALUES (?,?,?,?) ");
-                    ps.setString(1, productoTXT.getText());
-                    ps.setString(2, descripcionTXT.getText());
-                    ps.setString(3, precioTXT.getText());
-                    ps.setString(4, Integer.toString(cantidad_stock));
+                    ps = con.prepareStatement("INSERT INTO usuarios (idroles, nombre_completo, usuario, contrasenia) VALUES (?, ?, ?, ?)");
+                    ps.setString(1, String.valueOf(rolComboBox.getSelectedIndex()));
+                    ps.setString(2, nombreTXT.getText());
+                    ps.setString(3, userTXT.getText());
+                    ps.setString(4, contraTXT.getText());
                     System.out.println(ps);
                     int res = ps.executeUpdate();
 
                     if (res > 0) {
-                        mensaje.setText("¡Producto Agregado con éxito!");
+                        mensajeJ.setText("¡UsuarioAgregado con éxito!");
                         llenartabla();
                     } else {
-                        mensaje.setText("¡Error al agregar Producto!");
+                        mensajeJ.setText("¡Error al agregar Usuario!");
                     }
 
                     limpiar();
@@ -105,7 +105,7 @@ public class Usuarios extends Administrador {
                 }
             }
         });
-
+/*
         modificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
