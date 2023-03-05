@@ -10,6 +10,11 @@ public class Usuarios extends Administrador {
     private JTextField textField3;
     private JTable table1;
     private JButton regresarL;
+    private JButton buscar;
+    private JButton eliminar;
+    private JButton modificar;
+    private JLabel mensajeJ;
+
     public Usuarios() {
         super(2);
         Image img = Toolkit.getDefaultToolkit().getImage(getClass().getResource("Imagenes/LOGO.png"));
