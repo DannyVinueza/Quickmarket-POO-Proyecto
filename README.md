@@ -16,8 +16,8 @@
 
 # ENLACE DEL VIDEO
 
-> [![YouTube](https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=YouTube&logoColor=white)]([https://esfot.epn.edu.ec/images/headers/logo_esfot_buho.png](https://youtu.be/3j048bFWeME))
-> 
+> [![YouTube](https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=YouTube&logoColor=white)]([https://esfot.epn.edu.ec/images/headers/logo_esfot_buho.png])
+> https://youtu.be/3j048bFWeME 
 
 # DESARROLLADO POR
 
