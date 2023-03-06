@@ -18,5 +18,8 @@
 
 > [![YouTube](https://img.shields.io/badge/YouTube-red?style=for-the-badge&logo=YouTube&logoColor=white)](https://esfot.epn.edu.ec/images/headers/logo_esfot_buho.png)
 
+# DESARROLLADO POR
+
+[![Devolope-El-Buho.png](https://i.postimg.cc/26HTyyzv/Devolope-El-Buho.png)](https://postimg.cc/gXZ3BYLk)
 
 # DISEÑO DE LA BASE DE DATOS "MYSQL"
