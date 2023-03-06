@@ -24,3 +24,6 @@
 [![Devolope-El-Buho.png](https://i.postimg.cc/26HTyyzv/Devolope-El-Buho.png)](https://postimg.cc/gXZ3BYLk)
 
 # DISEÑO DE LA BASE DE DATOS "MYSQL"
+
+<img width="526" alt="image" src="https://user-images.githubusercontent.com/85198103/223001812-b9d08c0b-e98f-4b4f-b47c-fda84833dbef.png">
+
