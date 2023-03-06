@@ -245,7 +245,7 @@ public class Cajero extends Login{
 
                 try{
                     con = conCli.conectar();
-                    if(!listaProductos.isEmpty()){
+                    if(!listaProductos.isEmpty() && (Clientes.verClienteAg())){
                         String nombreCliente = "";
                         String direccionCliente = "";
                         String correo = "";
@@ -404,7 +404,6 @@ public class Cajero extends Login{
 
                         // Cerrar documento
                         document.close();
-                        //documentoPdf.close();
                         //System.out.println("La factura se ha generado correctamente");
                         mensajeTXT.setText("La factura se ha generado correctamente");
 
@@ -423,7 +422,7 @@ public class Cajero extends Login{
                         modelCliente.setRowCount(0);
                         tableClientes.revalidate();
                     }else{
-                        mensajeTXT.setText("Debe ingresar productos a la lista para facturar.");
+                        mensajeTXT.setText("Ingrese productos a la lista para facturar o verifique si un cliente esta agregado.");
                     }
 
                 }catch (Exception ex){
