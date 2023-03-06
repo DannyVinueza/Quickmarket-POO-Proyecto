@@ -65,15 +65,19 @@
 # COMO SE CREA LA BASE 
 
   #1  INGRESAMOS CREDENCIALES EN EL MYSQL WORKBENCH
+  
   <img width="863" alt="image" src="https://user-images.githubusercontent.com/85198103/223002979-85af9d3b-e709-4bf0-b695-70d54b98210b.png">
     
   #2 COPIAMOS LA BASE DE DATOS QUE SE DESCARGA CON EL PROGRAMA
+  
   <img width="521" alt="image" src="https://user-images.githubusercontent.com/85198103/223003087-6c3cb2d3-0910-4802-86ab-b12f20388531.png">
 
   #3 Pegamos el codigo el MYSQL WORKBENCH
+  
   <img width="548" alt="image" src="https://user-images.githubusercontent.com/85198103/223003156-0ce6499e-d401-43fb-a4a0-c9b3d5c7ee83.png">
 
   #4 LO EJECUTAMOS APLASTANDO EN EL BOTON QUE PARECE UN RAYO
+  
   <img width="519" alt="image" src="https://user-images.githubusercontent.com/85198103/223003224-a8c238b9-70af-43e4-873b-841982c460c3.png">
   
   #5 ESPERAMOS UN RATO Y PODEMOS USAR LA BASE YA DENTRO DEL PROGRAMA 
